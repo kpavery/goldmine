@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>GOLDMine</title>
+
+<style type="text/css">
+body {
+	font-family: Tahoma, sans-serif;
+	width: 400px;
+}
+
+.cent {
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
+
+td {
+	border-style: solid;
+	border-color: #AAA;
+	border-width: 1px 0px 0px 1px;
+	padding: 5px 8px;
+}
+
+table tr td:last-child {
+	border-right-width: 1px;
+}
+
+table {
+	border-style: solid;
+	border-color: #AAA;
+	border-width: 0px 0px 1px 0px;
+	background-color: #F5F5F5;
+	width: 100%;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.alt td {
+	background-color: #F9F9F9;
+}
+
+.top {
+	background-color: #FFFFFF;
+}
+
+.small td {
+	font-size: .7em;
+	color: #777;
+}
+
+</style>
+
+<script type="text/javascript">
+
+chrome.tabs.executeScript(null, {file: "contentscript.js"});
+
+String.prototype.capitalize = function(){
+	return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+};
+
+var global_txt = "";
+var str = "";
+
+function respondToMessage(param) {
+//    if(theMessageEvent.name === "classData") {
+    	//alert("message received");
+		var main = document.getElementById("main");
+		str = "<tr><td colspan='3' class='cent bold top'>Class List</td></tr>";
+		var mainarray = param;
+		//alert(theMessageEvent.message);
+		//alert(mainarray[0][2] + " " + mainarray[3][1]);
+		for (var i = 0; i < mainarray.length; i++) {
+//		for (var i = 0; i < 2; i++) {
+			//for (var j = 0; j < mainarray[i].length; j++) {
+				if (i % 2 == 1) {
+					str += "<tr class='alt'>";
+					//alert("" + i);
+				} else {
+					str += "<tr>";
+				}
+				
+				//alert(mainarray[i][3][0]);
+				
+				str += "<td class='right'>" + mainarray[i][0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
+				str += "<td>" + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
+				
+				
+				for (var j = 0; j < mainarray[i][3].length; j += 3) {
+					if (i % 2 == 1) {
+						str += "<tr class='alt small'>";
+					} else {
+						str += "<tr class='small'>";
+					}
+	
+					str += "<td class='right'>" + mainarray[i][3][j+0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][3][j+1].trimLeft().trimRight() + "</td>";
+					str += "<td>" + mainarray[i][3][j+2].trimLeft().trimRight() + "</td></tr>";
+				}
+					
+								
+				global_txt += mainarray[i][0].trimLeft().trimRight() + " " + mainarray[i][1].trimLeft().trimRight() + " " + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "\n";
+			//}
+		}
+		main.innerHTML = str;
+//    }
+}
+ 
+//safari.application.addEventListener("message",respondToMessage,false);
+chrome.extension.onRequest.addListener(
+  function(request, sender, sendResponse) {
+    respondToMessage(request);
+  });
+</script>
+</head>
+<body>
+<table id="main" cellspacing="0">
+<tr><td class='cent'>Please go to your course schedule page in GOLD (or reload it if you are already there).</td></tr>
+</table>
+</body>
+</html>

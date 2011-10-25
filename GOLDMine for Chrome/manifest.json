@@ -1,0 +1,15 @@
+{
+  "name": "GOLD Mine",
+  "version": "1.0",
+  "description": "A tool to export students' GOLD schedules to Google Calendar",
+  "background_page": "background.html",
+  "page_action" :
+  {
+    "default_icon" : "icon.png",
+    "default_title" : "Display course list",
+    "popup": "popup.html"
+  },
+  "permissions" : [
+    "tabs", "https://my.sa.ucsb.edu/gold/StudentSchedule.aspx"
+  ]
+}

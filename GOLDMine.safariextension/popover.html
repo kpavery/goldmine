@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>GOLDMine</title>
+
+<style type="text/css">
+/* Main page styling. */
+body {
+	font-family: Tahoma, sans-serif;
+}
+
+.cent {
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
+
+td {
+	border-style: solid;
+	border-color: #AAA;
+	border-width: 1px 0px 0px 1px;
+	padding: 5px 8px;
+}
+
+table tr td:last-child {
+	border-right-width: 1px;
+}
+
+table {
+	border-style: solid;
+	border-color: #AAA;
+	border-width: 0px 0px 1px 0px;
+	background-color: #F5F5F5;
+	width: 100%;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+.alt td {
+	background-color: #F9F9F9;
+}
+
+.top {
+	background-color: #FFFFFF;
+}
+
+.small td {
+	font-size: .7em;
+	color: #777;
+}
+
+</style>
+
+<script type="text/javascript">
+
+// This function adds .capitalize() to string variables.
+String.prototype.capitalize = function(){
+	return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+};
+
+// global_txt is a text version of the class schedule (hopefully used in exporting later).
+var global_txt = "";
+
+// str is an HTML/string version of the class schedule (output to the user in this popover).
+var str = "";
+
+// This function responds to messages sent from other places in the browser runtime.
+function respondToMessage(theMessageEvent) {
+	// We are only interested in "classData" messages, and we want to ignore the rest.
+    if(theMessageEvent.name === "classData") {
+    	// main is the element (a table) that we will insert our data into to display it to the user.
+		var main = document.getElementById("main");
+		
+		// Start the string.
+		str = "<tr><td colspan='3' class='cent bold top'>Class List</td></tr>";
+		
+		// Get the message's data and store it.
+		var mainarray = theMessageEvent.message;
+		
+		// Loop through each class.
+		for (var i = 0; i < mainarray.length; i++) {
+			// Alternate colours for the table rows.
+			if (i % 2 == 1) {
+				str += "<tr class='alt'>";
+			} else {
+				str += "<tr>";
+			}
+			
+			// Add a table row for each class, with its department (mainarray[i][0]), number (mainarray[i][1]), and name (mainarray[i][2]).
+			str += "<td class='right'>" + mainarray[i][0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
+			str += "<td>" + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
+			
+			// Loop through the array of meeting times for the class (mainarray[i][3]). We increment j by 3 each time, because we've stored 3 elements in the array for each meeting time.
+			for (var j = 0; j < mainarray[i][3].length; j += 3) {
+				// Use the same color as the class main row.
+				if (i % 2 == 1) {
+					str += "<tr class='alt small'>";
+				} else {
+					str += "<tr class='small'>";
+				}
+
+				// Add a table row for each meeting time, with its day, time, and room number. We use j as the offset of the first value for this meeting time
+				//    and add another offset to that (ranging 0-2) to get to the data we need. Every third value is the day value of another class meeting time.
+				str += "<td class='right'>" + mainarray[i][3][j+0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][3][j+1].trimLeft().trimRight() + "</td>";
+				str += "<td>" + mainarray[i][3][j+2].trimLeft().trimRight() + "</td></tr>";
+			}
+			
+			// Add a string representation of the class. [This is NOT complete, it doesn't do class meeting times at all yet!]
+			global_txt += mainarray[i][0].trimLeft().trimRight() + " " + mainarray[i][1].trimLeft().trimRight() + " " + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "\n";
+		}
+		
+		// Set the table's content to our new content string.
+		main.innerHTML = str;
+    }
+}
+
+// Makes this page listen for messages in the runtime.
+safari.application.addEventListener("message",respondToMessage,false);
+
+// The HTML below is the page structure, and the default text (that is displayed when no course data has been loaded).
+</script>
+</head>
+<body>
+<table id="main" cellspacing="0">
+<tr><td class='cent'>Please go to your course schedule page in GOLD (or reload it if you are already there).</td></tr>
+</table>
+</body>
+</html>
