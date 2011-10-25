@@ -1,4 +1,4 @@
-// Initialize.
+// Initialization.
 
 // class_names is the unparsed text pulled in from GOLD about each class (including its dept., num., and name).
 var class_names = new Array();
