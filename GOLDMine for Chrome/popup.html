@@ -5,8 +5,8 @@
 
 <style type="text/css">
 body {
-	font-family: Tahoma, sans-serif;
 	width: 400px;
+	font-family: Tahoma, sans-serif;
 }
 
 .cent {
@@ -59,61 +59,76 @@ table {
 
 chrome.tabs.executeScript(null, {file: "contentscript.js"});
 
+// This function adds .capitalize() to string variables.
 String.prototype.capitalize = function(){
-	return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+	return this.replace( /(^|\s|-|\/)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
 };
 
+// global_txt is a text version of the class schedule (hopefully used in exporting later).
 var global_txt = "";
+
+// str is an HTML/string version of the class schedule (output to the user in this popover).
 var str = "";
 
-function respondToMessage(param) {
-//    if(theMessageEvent.name === "classData") {
-    	//alert("message received");
+// This function responds to messages sent from other places in the browser runtime.
+function respondToMessage(theMessageEvent) {
+	// We are only interested in "classData" messages, and we want to ignore the rest.
+    if(theMessageEvent.title === "classData") {
+    	// main is the element (a table) that we will insert our data into to display it to the user.
 		var main = document.getElementById("main");
+		
+		// Start the string.
 		str = "<tr><td colspan='3' class='cent bold top'>Class List</td></tr>";
-		var mainarray = param;
-		//alert(theMessageEvent.message);
-		//alert(mainarray[0][2] + " " + mainarray[3][1]);
+		
+		// Get the message's data and store it.
+		var mainarray = theMessageEvent.data;
+		
+		// Loop through each class.
 		for (var i = 0; i < mainarray.length; i++) {
-//		for (var i = 0; i < 2; i++) {
-			//for (var j = 0; j < mainarray[i].length; j++) {
+		//for (var i = 0; i < 2; i++) {
+			// Alternate colours for the table rows.
+			if (i % 2 == 1) {
+				str += "<tr class='alt'>";
+			} else {
+				str += "<tr>";
+			}
+			
+			// Add a table row for each class, with its department (mainarray[i][0]), number (mainarray[i][1]), and name (mainarray[i][2]).
+			str += "<td class='right'>" + mainarray[i][0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
+			str += "<td>" + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
+			
+			// Loop through the array of meeting times for the class (mainarray[i][3]). We increment j by 3 each time, because we've stored 3 elements in the array for each meeting time.
+			for (var j = 0; j < mainarray[i][3].length; j += 3) {
+				// Use the same color as the class main row.
 				if (i % 2 == 1) {
-					str += "<tr class='alt'>";
-					//alert("" + i);
+					str += "<tr class='alt small'>";
 				} else {
-					str += "<tr>";
+					str += "<tr class='small'>";
 				}
-				
-				//alert(mainarray[i][3][0]);
-				
-				str += "<td class='right'>" + mainarray[i][0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
-				str += "<td>" + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
-				
-				
-				for (var j = 0; j < mainarray[i][3].length; j += 3) {
-					if (i % 2 == 1) {
-						str += "<tr class='alt small'>";
-					} else {
-						str += "<tr class='small'>";
-					}
-	
-					str += "<td class='right'>" + mainarray[i][3][j+0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][3][j+1].trimLeft().trimRight() + "</td>";
-					str += "<td>" + mainarray[i][3][j+2].trimLeft().trimRight() + "</td></tr>";
-				}
-					
-								
-				global_txt += mainarray[i][0].trimLeft().trimRight() + " " + mainarray[i][1].trimLeft().trimRight() + " " + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "\n";
-			//}
+
+				// Add a table row for each meeting time, with its day, time, and room number. We use j as the offset of the first value for this meeting time
+				//    and add another offset to that (ranging 0-2) to get to the data we need. Every third value is the day value of another class meeting time.
+				str += "<td class='right'>" + mainarray[i][3][j+0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][3][j+1].trimLeft().trimRight() + "</td>";
+				str += "<td>" + mainarray[i][3][j+2].trimLeft().trimRight() + "</td></tr>";
+			}
+			
+			// Add a string representation of the class. [This is NOT complete, it doesn't do class meeting times at all yet!]
+			global_txt += mainarray[i][0].trimLeft().trimRight() + " " + mainarray[i][1].trimLeft().trimRight() + " " + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "\n";
 		}
+		
+		// Set the table's content to our new content string.
 		main.innerHTML = str;
-//    }
+    }
 }
- 
+
+// Makes this page listen for messages in the runtime.
 //safari.application.addEventListener("message",respondToMessage,false);
 chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {
     respondToMessage(request);
   });
+
+// The HTML below is the page structure, and the default text (that is displayed when no course data has been loaded).
 </script>
 </head>
 <body>
