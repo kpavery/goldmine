@@ -65,7 +65,7 @@ if (class_names.length > 0) {
 		var split0 = class_names[i].substr(0,8);
 		var split1 = class_names[i].substr(8);
 		// Split the second part by hyphen, which should give the number and name separately.
-		var split2 = split1.split("-");
+		var split2 = split1.split("-",2);
 		
 		// Create a new array with the department, number, name, and array of meeting times. Add that as a new element of the passed data.
 		var final_split = new Array(split0,split2[0],split2[1],class_times[i]);
