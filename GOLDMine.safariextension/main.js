@@ -62,12 +62,13 @@ if (class_names.length > 0) {
 	for (var i = 0; i < class_names.length; i++) {
 		// Split on 3 spaces. This should split the the class name into two elements, department and number/name. The class name usually looks
 		//    something like "CMPSCCS   1L - PROGRAMMING LAB".
-		var split = class_names[i].split("  ");
+		var split0 = class_names[i].substr(0,8);
+		var split1 = class_names[i].substr(8);
 		// Split the second part by hyphen, which should give the number and name separately.
-		var split2 = split[1].split("-");
+		var split2 = split1.split("-");
 		
 		// Create a new array with the department, number, name, and array of meeting times. Add that as a new element of the passed data.
-		var final_split = new Array(split[0],split2[0],split2[1],class_times[i]);
+		var final_split = new Array(split0,split2[0],split2[1],class_times[i]);
 		pass_data[i] = final_split;
 	}
 	
