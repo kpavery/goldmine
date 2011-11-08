@@ -62,7 +62,7 @@ table {
 
 <script type="text/javascript">
 
-// This function adds .capitalize() to string variables.
+// This function adds .capitalize() to string variables. It works with punctuation now.
 String.prototype.capitalize = function(){
 	return this.replace( /(^|\s|-|\/|\.)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
 };
