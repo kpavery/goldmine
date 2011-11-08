@@ -77,7 +77,7 @@ if (class_names.length > 0) {
 			for(var j = 2; j < split2.length; j++)
 			{
 				// Append the parts that shouldn't have been split off
-				split3 += "-"+split2[i];
+				split3 += "-"+split2[j];
 			}
 		}
 		

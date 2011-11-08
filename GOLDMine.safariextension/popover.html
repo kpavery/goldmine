@@ -53,13 +53,18 @@ table {
 	color: #777;
 }
 
+.medium {
+	font-size: .85em;
+	color: #444;
+}
+
 </style>
 
 <script type="text/javascript">
 
 // This function adds .capitalize() to string variables.
 String.prototype.capitalize = function(){
-	return this.replace( /(^|\s)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+	return this.replace( /(^|\s|-|\/|\.)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
 };
 
 // global_txt is a text version of the class schedule (hopefully used in exporting later).
@@ -93,6 +98,18 @@ function respondToMessage(theMessageEvent) {
 			// Add a table row for each class, with its department (mainarray[i][0]), number (mainarray[i][1]), and name (mainarray[i][2]).
 			str += "<td class='right'>" + mainarray[i][0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
 			str += "<td>" + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
+			
+			// Second row is the same color as the first.
+			if (i % 2 == 1) {
+				str += "<tr class='alt medium'>";
+			} else {
+				str += "<tr class='medium'>";
+			}
+			
+			// Output the instructor in the far right cell of the row.
+			str += "<td class='right'></td><td class='cent'></td>";
+			str += "<td>" + mainarray[i][4].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
+
 			
 			// Loop through the array of meeting times for the class (mainarray[i][3]). We increment j by 3 each time, because we've stored 3 elements in the array for each meeting time.
 			for (var j = 0; j < mainarray[i][3].length; j += 3) {

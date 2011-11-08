@@ -6,6 +6,8 @@ var class_names = new Array();
 var meeting_times = new Array();
 // class_times is the parsed values for the meeting times of the all the classes. It is an array of arrays, with a top-level element for each class.
 var class_times = new Array();
+// instructors is an array for the professors of each class.
+var instructors = new Array();
 // Counter.
 var count = 0;
 
@@ -21,6 +23,13 @@ for (var i = 0; i < classes.length; i++) {
 		var meeting_time = document.getElementById("ctl00_pageContent_CourseList_ctl0" + (count + 1) + "_MeetingTimesList");
 		// Add that to the meeting_times array, and add the class name to the class_names array.
 		meeting_times[count] = meeting_time;
+		
+		// Get the instructor from the page.
+		var instructor = document.getElementById("ctl00_pageContent_CourseList_ctl0" + (count + 1) + "_InstructorList");
+		
+		// Add the instructor, trimmed, to the instructors array.
+		instructors[count] = instructor.textContent.trimLeft().trimRight();
+				
 		class_names[count++] = classes[i].textContent;
 	}
 }
@@ -58,6 +67,7 @@ if (class_names.length > 0) {
 	// Initialize the message data, that will be passed to the popover.
 	var pass_data = new Array();
 	
+	
 	// Loop through all the classes.
 	for (var i = 0; i < class_names.length; i++) {
 		// Split on 3 spaces. This should split the the class name into two elements, department and number/name. The class name usually looks
@@ -65,10 +75,19 @@ if (class_names.length > 0) {
 		var split0 = class_names[i].substr(0,8);
 		var split1 = class_names[i].substr(8);
 		// Split the second part by hyphen, which should give the number and name separately.
-		var split2 = split1.split("-",2);
+		var split2 = split1.split("-");
+
+		var split3 = split2[1];
+		// Another hyphen was in the title so extra splitting occurred
+		if (split2.length > 2) {
+			for(var j = 2; j < split2.length; j++) {
+				// Append the parts that shouldn't have been split off
+				split3 += "-"+split2[j];
+			}
+		}
 		
-		// Create a new array with the department, number, name, and array of meeting times. Add that as a new element of the passed data.
-		var final_split = new Array(split0,split2[0],split2[1],class_times[i]);
+		// Create a new array with the department, number, name, an array of meeting times, and the instructor. Add that as a new element of the passed data.
+		var final_split = new Array(split0,split2[0],split3,class_times[i],instructors[i]);
 		pass_data[i] = final_split;
 	}
 	
