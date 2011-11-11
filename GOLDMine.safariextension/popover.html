@@ -48,13 +48,31 @@ table {
 	background-color: #FFFFFF;
 }
 
+
+
+a {
+	color: #000000;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
 .small td {
 	font-size: .7em;
 	color: #777;
 }
 
+.small td a {
+	color: #777;
+}
+
 .medium {
 	font-size: .85em;
+	color: #444;
+}
+
+.medium a {
 	color: #444;
 }
 
@@ -66,6 +84,136 @@ table {
 String.prototype.capitalize = function(){
 	return this.replace( /(^|\s|-|\/|\.)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
 };
+
+// Create an array of buildings mapped with the abbreviation.
+var bldgs = [{abbr:"ARTS", icmname:"Arts and University Art Museum"}, {abbr:"BIOL2", icmname:"Biological Science 2"}, {abbr:"BREN", icmname:"Bren School of Environmental Science"}, {abbr:"BRDA", icmname:"Broida Hall"}, {abbr:"BUCHN", icmname:"Buchanan Hall"}, {abbr:"CAMPBHALL", icmname:"Campbell Hall"}, {abbr:"CHEM", icmname:"Chemistry"}, {abbr:"LIB", icmname:"Davidson Library"}, {abbr:"ELLSN", icmname:"Ellison Hall"}, {abbr:"EMBARHALL", icmname:"Embarcadero Hall"}, {abbr:"ENGR2", icmname:"Engineering II"}, {abbr:"ESB", icmname:"Engineering Science (ESB)"}, {abbr:"EVENTCENTR", icmname:"Events Center (Thunderdome)"}, {abbr:"WEBB", icmname:"Geological Sciences (Webb Hall)"}, {abbr:"GIRV", icmname:"Girvetz Hall"}, {abbr:"HFH", icmname:"Harold Frank Hall (Engineering I)"}, {abbr:"HSSB", icmname:"Humanities Social Sci and Performing Arts Thtr (HSSB)"}, {abbr:"IVTHEA", icmname:"Isla Vista Theater"}, {abbr:"KERR", icmname:"Kerr Hall"}, {abbr:"KOHN", icmname:"Kohn Hall and Kavli Institute"}, {abbr:"LSB", icmname:"Life Science"}, {abbr:"MLAB", icmname:"Marine Science Research Building"}, {abbr:"MRL", icmname:"Materials Research Lab"}, {abbr:"MUSIC", icmname:"Music and Lotte Lehmann Concert Hall"}, {abbr:"MUSICLLCH", icmname:"Music and Lotte Lehmann Concert Hall"}, {abbr:"NOBLE", icmname:"Noble Hall"}, {abbr:"NH", icmname:"North Hall (NH)"}, {abbr:"PHELP", icmname:"Phelps Hall"}, {abbr:"PSB-N", icmname:"Physical Science North (PSB North)"}, {abbr:"PSB-S", icmname:"Physical Sciences South (PSB South)"}, {abbr:"PSYCH", icmname:"Psychology"}, {abbr:"RECEN", icmname:"Recreation Center (RecCen)"}, {abbr:"RGYM", icmname:"Robertson Gymnasium"}, {abbr:"SH", icmname:"South Hall"}, {abbr:"SAASB", icmname:"Student Affairs and Administration Services (SAASB)"}, {abbr:"STU HLTH", icmname:"Student Health"}, {abbr:"STUHLTH", icmname:"Student Health"}, {abbr:"SRB", icmname:"Student Resource Building (SRB)"}, {abbr:"TD-W", icmname:"Theater and Dance West (TD-W)"}];
+// Make a list of all the abbreviations by themselves.
+var abbrevs = ["ARTS", "BIOL2", "BREN", "BRDA", "BUCHN", "CAMPBHALL", "CHEM", "LIB", "ELLSN", "EMBARHALL", "ENGR2", "ESB", "EVENTCENTR", "WEBB", "GIRV", "HFH", "HSSB", "IVTHEA", "KERR", "KOHN", "LSB", "MLAB", "MRL", "MUSIC", "MUSICLLCH", "NOBLE", "NH", "PHELP", "PSB-N", "PSB-S", "PSYCH", "RECEN", "RGYM", "SH", "SAASB", "STU HLTH", "STUHLTH", "SRB", "TD-W"];
+
+for (var k = 0; k < bldgs.length; k++) {
+    bldgs[bldgs[k].abbr] = bldgs[k];
+}
+
+// Function for buildings that aren't supported by the geology department map.
+function getBldg(bldgAndRoom)
+{
+	var bldg = bldgAndRoom.split(" ");
+	if(bldg[0] == 494) return "College of Creative Studies";
+	if(bldg[0] == 479) return "Old Gymnasium";
+	if(bldg[0] == "ANCAP") return "Anacapa Hall";
+	if(bldg[0] == "BSIF") return "Biological Sciences Instructional Facility";
+	if(bldg[0] == "IVTHEA2") return "Isla Vista Theater";
+	if(bldg[0] == "MANZ") return "Loma Pelona";
+	if(bldg[0].indexOf("RECEN") > -1) return "Recreation Center";
+	if(bldg[0].indexOf("RGYM") > -1) return "Robertson Gymnasium";
+	if(bldg[0] == "SAN" && bldg[1] == "MIGEL") return "San Miguel Hall";
+	if(bldg[0] == "SAN" && bldg[1] == "NIC") return "San Nicolas Hall";
+	if(bldg[0] == "SAN" && bldg[1] == "RAFEL") return "San Rafael Hall";
+	if(bldg[0] == "SANTA" && bldg[1] == "CRUZ") return "Santa Cruz Hall";
+	if(bldg[0] == "SANTA" && bldg[1] == "ROSA") return "Santa Rosa Hall";
+	if(bldg[0] == "TD-E") return "Theater and Dance East";
+	if(bldg[0] == "ZODO") return "Zodo's Bowling & Beyond";
+	return bldgAndRoom;
+}
+
+// Function to leverage the building information to build a map URL.
+function getBldgURL(bldgAndRoom)
+{
+	var bldg = bldgAndRoom.split(" ");
+	var returnURL;
+	if(abbrevs.indexOf(bldg[0])!=-1) 
+		returnURL = "http://earth.geog.ucsb.edu/icm/index.html?bldg=" + bldgs[bldg[0]].icmname + "&room=" + bldg[1];
+	else
+		returnURL = "http://maps.google.com/maps?q=" + getBldg(bldgAndRoom) + ",+Isla+Vista,+CA";
+	return returnURL;
+}
+
+// Function to get the URL of an arbitrary university department.
+function getDeptURL(dept)
+{
+	if(dept=="ANTH") return "http://www.anth.ucsb.edu";
+	if(dept=="ART CS") return "http://www.ccs.ucsb.edu/art";
+	if(dept=="ARTHI") return "http://www.arthistory.ucsb.edu";
+	if(dept=="ARTST") return "http://www.arts.ucsb.edu";
+	if(dept=="AS AM") return "http://www.asamst.ucsb.edu";
+	if(dept=="ASTRO") return "http://web.physics.ucsb.edu/~astrogroup";
+	if(dept=="BIOL CS") return "http://www.ccs.ucsb.edu/biology";
+	if(dept=="BL ST") return "http://www.blackstudies.ucsb.edu";
+	if(dept=="BMSE") return "http://www.bmse.ucsb.edu";
+	if(dept=="C LIT") return "http://www.complit.ucsb.edu";
+	if(dept=="CH E") return "http://www.chemengr.ucsb.edu";
+	if(dept=="CH ST") return "http://www.chicst.ucsb.edu";
+	if(dept=="CHEM") return "http://www.chem.ucsb.edu";
+	if(dept=="CHEM CS") return "http://www.ccs.ucsb.edu/chem_biochem";
+	if(dept=="CHIN") return "http://www.eastasian.ucsb.edu";
+	if(dept=="CLASS") return "http://www.classics.ucsb.edu";
+	if(dept=="CMPSC") return "http://www.cs.ucsb.edu";
+	if(dept=="CMPSCCS") return "http://cs.ucsb.edu/~ccs";
+	if(dept=="CNCSP") return "http://education.ucsb.edu/Graduate-Studies/CCSP/CCSP-home.html";
+	if(dept=="COMM") return "http://www.comm.ucsb.edu";
+	if(dept=="DANCE") return "http://www.theaterdance.ucsb.edu";
+	if(dept=="EACS") return "http://www.eastasian.ucsb.edu";
+	if(dept=="EARTH") return "http://www.geol.ucsb.edu";
+	if(dept=="ECE") return "http://www.ece.ucsb.edu";
+	if(dept=="ECON") return "http://www.econ.ucsb.edu";
+	if(dept.indexOf("ED")==0) return "http://www.education.ucsb.edu";
+	if(dept=="EEMB") return "http://www.lifesci.ucsb.edu";
+	if(dept=="ENGL") return "http://www.english.ucsb.edu";
+	if(dept=="ENGR") return "http://engineering.ucsb.edu";
+	if(dept=="ENV S") return "http://www.es.ucsb.edu";
+	if(dept=="ES 1") return "http://essr.sa.ucsb.edu";
+	if(dept=="ESM") return "http://www.bren.ucsb.edu";
+	if(dept=="ESS") return "http://essr.sa.ucsb.edu";
+	if(dept=="FEMST") return "http://www.femst.ucsb.edu";
+	if(dept=="FLMST") return "http://www.filmandmedia.ucsb.edu";
+	if(dept=="FR") return "http://www.frit.ucsb.edu";
+	if(dept=="GEOG") return "http://www.geog.ucsb.edu";
+	if(dept=="GEOL") return "http://www.geol.ucsb.edu";
+	if(dept=="GER") return "http://www.gss.ucsb.edu";
+	if(dept=="GLOBL") return "http://www.global.ucsb.edu";
+	if(dept=="GPS") return "http://www.global.ucsb.edu/programs/gps";
+	if(dept=="GREEK") return "http://www.classics.ucsb.edu";
+	if(dept=="HEB") return "http://www.gss.ucsb.edu";
+	if(dept=="HIST") return "http://www.history.ucsb.edu";
+	if(dept=="INT") return "http://www.advising.ltsc.ucsb.edu/freshman";
+	if(dept=="ITAL") return "http://www.frit.ucsb.edu";
+	if(dept=="JAPAN") return "http://www.eastasian.ucsb.edu";
+	if(dept=="KOR") return "http://www.eastasian.ucsb.edu";
+	if(dept=="LAIS") return "http://www.lais.ucsb.edu";
+	if(dept=="LATIN") return "http://www.classics.ucsb.edu";
+	if(dept=="LING") return "http://www.linguistics.ucsb.edu";
+	if(dept=="LIT CS") return "http://www.ccs.ucsb.edu/literature";
+	if(dept=="MARSC") return "http://www.igpms.ucsb.edu";
+	if(dept=="MAT") return "http://www.mat.ucsb.edu";
+	if(dept=="MATH") return "http://www.math.ucsb.edu";
+	if(dept=="MATH CS") return "http://ccs.math.ucsb.edu";
+	if(dept=="MATH WKL") return "http://www.math.ucsb.edu";
+	if(dept=="MATRL") return "http://www.materials.ucsb.edu";
+	if(dept=="MCDB") return "http://www.lifesci.ucsb.edu";
+	if(dept=="ME") return "http://www.me.ucsb.edu";
+	if(dept=="ME ST") return "http://medievalstudies.ucsb.edu";
+	if(dept=="MES") return "http://www.cmes.ucsb.edu";
+	if(dept=="MS") return "http://www.milsci.ucsb.edu";
+	if(dept=="MUS") return "http://www.music.ucsb.edu";
+	if(dept=="MUS CS") return "http://www.ccs.ucsb.edu/music";
+	if(dept=="MUS A") return "http://www.music.ucsb.edu";
+	if(dept=="PHIL") return "http://www.philosophy.ucsb.edu";
+	if(dept=="PHYS") return "http://www.physics.ucsb.edu";
+	if(dept=="PHYS CS") return "http://www.ccs.ucsb.edu/physics";
+	if(dept=="POL S") return "http://www.polsci.ucsb.edu";
+	if(dept=="PORT") return "http://www.spanport.ucsb.edu";
+	if(dept=="PSTAT") return "http://www.pstat.ucsb.edu";
+	if(dept=="PSY") return "http://www.psych.ucsb.edu";
+	if(dept=="RENST") return "http://www.renaissancestudies.ucsb.edu";
+	if(dept=="RG ST") return "http://www.religion.ucsb.edu";
+	if(dept=="SHS") return "http://www.speech.ucsb.edu";
+	if(dept=="SLAV") return "http://www.gss.ucsb.edu";
+	if(dept=="SOC") return "http://www.soc.ucsb.edu";
+	if(dept=="SPAN") return "http://www.spanport.ucsb.edu";
+	if(dept=="THTR") return "http://www.theaterdance.ucsb.edu";
+	if(dept=="WRIT") return "http://www.writing.ucsb.edu";
+	return ("http://www.google.com/search?q=ucsb+" + dept +"+department");
+}
 
 // global_txt is a text version of the class schedule (hopefully used in exporting later).
 var global_txt = "";
@@ -81,7 +229,7 @@ function respondToMessage(theMessageEvent) {
 		var main = document.getElementById("main");
 		
 		// Start the string.
-		str = "<tr><td colspan='3' class='cent bold top'>Class List</td></tr>";
+		str = "<tr><td colspan='4' class='cent bold top'>Class List</td></tr>";
 		
 		// Get the message's data and store it.
 		var mainarray = theMessageEvent.message;
@@ -96,20 +244,8 @@ function respondToMessage(theMessageEvent) {
 			}
 			
 			// Add a table row for each class, with its department (mainarray[i][0]), number (mainarray[i][1]), and name (mainarray[i][2]).
-			str += "<td class='right'>" + mainarray[i][0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
-			str += "<td>" + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
-			
-			// Second row is the same color as the first.
-			if (i % 2 == 1) {
-				str += "<tr class='alt medium'>";
-			} else {
-				str += "<tr class='medium'>";
-			}
-			
-			// Output the instructor in the far right cell of the row.
-			str += "<td class='right'></td><td class='cent'></td>";
-			str += "<td>" + mainarray[i][4].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
-
+			str += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i][0].trimLeft().trimRight()) + "' target='_blank'>" + mainarray[i][0].trimLeft().trimRight() + "</a>" + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
+			str += "<td colspan='2'>" + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
 			
 			// Loop through the array of meeting times for the class (mainarray[i][3]). We increment j by 3 each time, because we've stored 3 elements in the array for each meeting time.
 			for (var j = 0; j < mainarray[i][3].length; j += 3) {
@@ -123,7 +259,16 @@ function respondToMessage(theMessageEvent) {
 				// Add a table row for each meeting time, with its day, time, and room number. We use j as the offset of the first value for this meeting time
 				//    and add another offset to that (ranging 0-2) to get to the data we need. Every third value is the day value of another class meeting time.
 				str += "<td class='right'>" + mainarray[i][3][j+0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][3][j+1].trimLeft().trimRight() + "</td>";
-				str += "<td>" + mainarray[i][3][j+2].trimLeft().trimRight() + "</td></tr>";
+				str += "<td>" + "<a href='" + getBldgURL(mainarray[i][3][j+2].trimLeft().trimRight()) +"' target='_blank'>" + mainarray[i][3][j+2].trimLeft().trimRight() + "</a>" + "</td>";
+				// Add the last table cell for each row.
+				str += "<td>";
+				// Check if there is an instructor for this row.
+				if (j/3 < mainarray[i][4].length) {
+					// If there is, output it.
+					str += mainarray[i][4][j/3].trimLeft().trimRight().toLowerCase().capitalize();
+				}
+				// Finish the cell, and the row.
+				str += "</td></tr>";
 			}
 			
 			// Add a string representation of the class. [This is NOT complete, it doesn't do class meeting times at all yet!]
@@ -137,6 +282,42 @@ function respondToMessage(theMessageEvent) {
 
 // Makes this page listen for messages in the runtime.
 safari.application.addEventListener("message",respondToMessage,false);
+
+// Function to open links in new tabs.
+function manageLinks(event) {
+	// Get the active tab and an array of all the tabs.
+	var activeTab = safari.application.activeBrowserWindow.activeTab;
+	var alltabs = safari.application.activeBrowserWindow.tabs;
+	
+	// Set the default opening location to the far right.
+	var index = alltabs.length;
+	
+	// Go through all the tabs.
+	for (var i = 0; i < alltabs.length; i++) {
+		// If we found the active tab, save it's index.
+		if (alltabs[i] === activeTab) {
+			index = i+1;
+		}
+	}
+
+	// Open a new tab to the right of the active tab (or defaulting to the far right).
+	var tab = safari.application.activeBrowserWindow.openTab('foreground',index);
+	// Load the link's url in the new tab.
+	tab.url = event.target.href;
+	
+	// Get all the popovers currently in the browser.
+	var popovers = safari.extension.popovers;
+	
+	// Go through all the popovers, and hide them.
+	for (var i = 0; i < popovers.length; i++) {
+		popovers[i].hide();
+	}
+	
+	return false;
+}
+
+// Make sure the page calls the function to handle links.
+document.onclick=manageLinks;
 
 // The HTML below is the page structure, and the default text (that is displayed when no course data has been loaded).
 </script>

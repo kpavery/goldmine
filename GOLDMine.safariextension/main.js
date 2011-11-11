@@ -27,8 +27,23 @@ for (var i = 0; i < classes.length; i++) {
 		// Get the instructor from the page.
 		var instructor = document.getElementById("ctl00_pageContent_CourseList_ctl0" + (count + 1) + "_InstructorList");
 		
-		// Add the instructor, trimmed, to the instructors array.
-		instructors[count] = instructor.textContent.trimLeft().trimRight();
+		// Check f we found instructors.		
+		if (instructor) {
+			// If we did, get all the instructors from the table. The elements they're in may be clcellprimary or clcellprimaryalt, so handle both.
+			var currentinstructors = instructor.getElementsByClassName("clcellprimary");
+			var currentinstructorsstr = new Array();
+			if (currentinstructors.length == 0){
+				currentinstructors = instructor.getElementsByClassName("clcellprimaryalt");
+			}
+			
+			// Go through all the instructors, and get their string representation, trimmed.
+			for (var j = 0; j < currentinstructors.length; j++) {
+						currentinstructorsstr[j] = currentinstructors[j].textContent.trimLeft().trimRight();
+			}
+			
+			// Add the instructor array for this course, trimmed, to the main instructors array.
+			instructors[count] = currentinstructorsstr;
+		}
 				
 		class_names[count++] = classes[i].textContent;
 	}
@@ -86,7 +101,7 @@ if (class_names.length > 0) {
 			}
 		}
 		
-		// Create a new array with the department, number, name, an array of meeting times, and the instructor. Add that as a new element of the passed data.
+		// Create a new array with the department, number, name, an array of meeting times, and the instructors. Add that as a new element of the passed data.
 		var final_split = new Array(split0,split2[0],split3,class_times[i],instructors[i]);
 		pass_data[i] = final_split;
 	}

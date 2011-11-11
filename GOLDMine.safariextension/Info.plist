@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Keith Avery</string>
 	<key>Builder Version</key>
-	<string>7534.51.22</string>
+	<string>7534.52.7</string>
 	<key>CFBundleDisplayName</key>
 	<string>GOLDMine</string>
 	<key>CFBundleIdentifier</key>
@@ -24,11 +24,11 @@
 				<key>Filename</key>
 				<string>popover.html</string>
 				<key>Height</key>
-				<real>315</real>
+				<real>360</real>
 				<key>Identifier</key>
 				<string>GOLDMine</string>
 				<key>Width</key>
-				<real>390</real>
+				<real>420</real>
 			</dict>
 		</array>
 		<key>Toolbar Items</key>
