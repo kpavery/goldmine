@@ -82,6 +82,8 @@ if (class_names.length > 0) {
 	// Initialize the message data, that will be passed to the popover.
 	var pass_data = new Array();
 	
+	// Set the first element of the pass data to the name of the quarter we're analyzing. It's the text of the selected option of the page's select tag.
+	pass_data[0] = document.getElementsByTagName("SELECT")[0].options[document.getElementsByTagName("SELECT")[0].selectedIndex].textContent.trimLeft().trimRight();
 	
 	// Loop through all the classes.
 	for (var i = 0; i < class_names.length; i++) {
@@ -103,7 +105,8 @@ if (class_names.length > 0) {
 		
 		// Create a new array with the department, number, name, an array of meeting times, and the instructors. Add that as a new element of the passed data.
 		var final_split = new Array(split0,split2[0],split3,class_times[i],instructors[i]);
-		pass_data[i] = final_split;
+		// Offset the index at one, because the first element is the quarter.
+		pass_data[i+1] = final_split;
 	}
 	
 	// If classes were found, then pass them to the popover as a message with name "classData".
@@ -111,3 +114,4 @@ if (class_names.length > 0) {
 		safari.self.tab.dispatchMessage("classData",pass_data);
 	}
 }
+
