@@ -264,8 +264,21 @@ function respondToMessage(theMessageEvent) {
 				str += "<td>";
 				// Check if there is an instructor for this row.
 				if (j/3 < mainarray[i][4].length) {
-					// If there is, output it.
+					// Get the instructor.
+					var instructor = mainarray[i][4][j/3].trimLeft().trimRight().toLowerCase().capitalize();
+					// Get the instructor's last name (for RateMyProfessor).
+					var lastname = instructor.split(" ",1)[0];
+					// Check if the last name is usable (it's not empty or one character, and it doesn't have a period).
+					if ((lastname.length > 1) && (lastname.indexOf(".") == -1)) {
+						// Add a link to RateMyProfessor, searching by the last name.
+						str += "<a href='" + "http://www.ratemyprofessors.com/SearchProfs.jsp?letter=" + lastname + "'>";
+					}
+					// Output the instructor.
 					str += mainarray[i][4][j/3].trimLeft().trimRight().toLowerCase().capitalize();
+					// If we started a link, finish it.
+					if ((lastname.length > 1) && (lastname.indexOf(".") != -1)) {
+						str += "</a>";
+					}
 				}
 				// Finish the cell, and the row.
 				str += "</td></tr>";
@@ -275,42 +288,47 @@ function respondToMessage(theMessageEvent) {
 			global_txt += mainarray[i][0].trimLeft().trimRight() + " " + mainarray[i][1].trimLeft().trimRight() + " " + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "\n";
 		}
 		
+		//alert("" + str);
+		
 		// Set the table's content to our new content string.
 		main.innerHTML = str;
     }
 }
+
 
 // Makes this page listen for messages in the runtime.
 safari.application.addEventListener("message",respondToMessage,false);
 
 // Function to open links in new tabs.
 function manageLinks(event) {
-	// Get the active tab and an array of all the tabs.
-	var activeTab = safari.application.activeBrowserWindow.activeTab;
-	var alltabs = safari.application.activeBrowserWindow.tabs;
-	
-	// Set the default opening location to the far right.
-	var index = alltabs.length;
-	
-	// Go through all the tabs.
-	for (var i = 0; i < alltabs.length; i++) {
-		// If we found the active tab, save it's index.
-		if (alltabs[i] === activeTab) {
-			index = i+1;
+	if (event.target.href) {
+		// Get the active tab and an array of all the tabs.
+		var activeTab = safari.application.activeBrowserWindow.activeTab;
+		var alltabs = safari.application.activeBrowserWindow.tabs;
+		
+		// Set the default opening location to the far right.
+		var index = alltabs.length;
+		
+		// Go through all the tabs.
+		for (var i = 0; i < alltabs.length; i++) {
+			// If we found the active tab, save it's index.
+			if (alltabs[i] === activeTab) {
+				index = i+1;
+			}
 		}
-	}
-
-	// Open a new tab to the right of the active tab (or defaulting to the far right).
-	var tab = safari.application.activeBrowserWindow.openTab('foreground',index);
-	// Load the link's url in the new tab.
-	tab.url = event.target.href;
 	
-	// Get all the popovers currently in the browser.
-	var popovers = safari.extension.popovers;
-	
-	// Go through all the popovers, and hide them.
-	for (var i = 0; i < popovers.length; i++) {
-		popovers[i].hide();
+		// Open a new tab to the right of the active tab (or defaulting to the far right).
+		var tab = safari.application.activeBrowserWindow.openTab('foreground',index);
+		// Load the link's url in the new tab.
+		tab.url = event.target.href;
+		
+		// Get all the popovers currently in the browser.
+		var popovers = safari.extension.popovers;
+		
+		// Go through all the popovers, and hide them.
+		for (var i = 0; i < popovers.length; i++) {
+			popovers[i].hide();
+		}
 	}
 	
 	return false;
