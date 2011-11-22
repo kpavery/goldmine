@@ -4,6 +4,7 @@
 <title>GOLDMine</title>
 
 <style type="text/css">
+/* Main page styling. */
 body {
 	width: 400px;
 	font-family: Tahoma, sans-serif;
@@ -48,9 +49,30 @@ table {
 	background-color: #FFFFFF;
 }
 
+a {
+        color: #000000;
+}
+
+a:hover {
+        text-decoration: none;
+}
+
 .small td {
 	font-size: .7em;
 	color: #777;
+}
+
+.small td a {
+        color: #777;
+}
+
+.medium {
+        font-size: .85em;
+        color: #444;
+}
+
+.medium a {
+        color: #444;
 }
 
 </style>
@@ -59,17 +81,21 @@ table {
 
 chrome.tabs.executeScript(null, {file: "contentscript.js"});
 
-// This function adds .capitalize() to string variables.
+// This function adds .capitalize() to string variables. It works with punctuation now.
 String.prototype.capitalize = function(){
-	return this.replace( /(^|\s|-|\/)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+        return this.replace( /(^|\s|-|\/|\.)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
 };
 
+// Create an array of buildings mapped with the abbreviation.
 var bldgs = [{abbr:"ARTS", icmname:"Arts and University Art Museum"}, {abbr:"BIOL2", icmname:"Biological Science 2"}, {abbr:"BREN", icmname:"Bren School of Environmental Science"}, {abbr:"BRDA", icmname:"Broida Hall"}, {abbr:"BUCHN", icmname:"Buchanan Hall"}, {abbr:"CAMPBHALL", icmname:"Campbell Hall"}, {abbr:"CHEM", icmname:"Chemistry"}, {abbr:"LIB", icmname:"Davidson Library"}, {abbr:"ELLSN", icmname:"Ellison Hall"}, {abbr:"EMBARHALL", icmname:"Embarcadero Hall"}, {abbr:"ENGR2", icmname:"Engineering II"}, {abbr:"ESB", icmname:"Engineering Science (ESB)"}, {abbr:"EVENTCENTR", icmname:"Events Center (Thunderdome)"}, {abbr:"WEBB", icmname:"Geological Sciences (Webb Hall)"}, {abbr:"GIRV", icmname:"Girvetz Hall"}, {abbr:"HFH", icmname:"Harold Frank Hall (Engineering I)"}, {abbr:"HSSB", icmname:"Humanities Social Sci and Performing Arts Thtr (HSSB)"}, {abbr:"IVTHEA", icmname:"Isla Vista Theater"}, {abbr:"KERR", icmname:"Kerr Hall"}, {abbr:"KOHN", icmname:"Kohn Hall and Kavli Institute"}, {abbr:"LSB", icmname:"Life Science"}, {abbr:"MLAB", icmname:"Marine Science Research Building"}, {abbr:"MRL", icmname:"Materials Research Lab"}, {abbr:"MUSIC", icmname:"Music and Lotte Lehmann Concert Hall"}, {abbr:"MUSICLLCH", icmname:"Music and Lotte Lehmann Concert Hall"}, {abbr:"NOBLE", icmname:"Noble Hall"}, {abbr:"NH", icmname:"North Hall (NH)"}, {abbr:"PHELP", icmname:"Phelps Hall"}, {abbr:"PSB-N", icmname:"Physical Science North (PSB North)"}, {abbr:"PSB-S", icmname:"Physical Sciences South (PSB South)"}, {abbr:"PSYCH", icmname:"Psychology"}, {abbr:"RECEN", icmname:"Recreation Center (RecCen)"}, {abbr:"RGYM", icmname:"Robertson Gymnasium"}, {abbr:"SH", icmname:"South Hall"}, {abbr:"SAASB", icmname:"Student Affairs and Administration Services (SAASB)"}, {abbr:"STU HLTH", icmname:"Student Health"}, {abbr:"STUHLTH", icmname:"Student Health"}, {abbr:"SRB", icmname:"Student Resource Building (SRB)"}, {abbr:"TD-W", icmname:"Theater and Dance West (TD-W)"}];
+// Make a list of all the abbreviations by themselves.
 var abbrevs = ["ARTS", "BIOL2", "BREN", "BRDA", "BUCHN", "CAMPBHALL", "CHEM", "LIB", "ELLSN", "EMBARHALL", "ENGR2", "ESB", "EVENTCENTR", "WEBB", "GIRV", "HFH", "HSSB", "IVTHEA", "KERR", "KOHN", "LSB", "MLAB", "MRL", "MUSIC", "MUSICLLCH", "NOBLE", "NH", "PHELP", "PSB-N", "PSB-S", "PSYCH", "RECEN", "RGYM", "SH", "SAASB", "STU HLTH", "STUHLTH", "SRB", "TD-W"];
+// Make the bldgs array accessible by the abbreviation strings
 for (var k = 0; k < bldgs.length; k++) {
     bldgs[bldgs[k].abbr] = bldgs[k];
 }
 
+// Function for buildings that aren't supported by the geology department map.
 function getBldg(bldgAndRoom)
 {
 	var bldg = bldgAndRoom.split(" ");
@@ -91,6 +117,7 @@ function getBldg(bldgAndRoom)
 	return bldgAndRoom;
 }
 
+// Function to leverage the building information to build a map URL.
 function getBldgURL(bldgAndRoom)
 {
 	var bldg = bldgAndRoom.split(" ");
@@ -102,6 +129,7 @@ function getBldgURL(bldgAndRoom)
 	return returnURL;
 }
 
+// Function to get the URL of an arbitrary university department.
 function getDeptURL(dept)
 {
 	if(dept=="ANTH") return "http://www.anth.ucsb.edu";
@@ -202,16 +230,15 @@ function respondToMessage(theMessageEvent) {
     	// main is the element (a table) that we will insert our data into to display it to the user.
 		var main = document.getElementById("main");
 		
-		// Start the string.
-		str = "<tr><td colspan='3' class='cent bold top'>Class List</td></tr>";
-		
 		// Get the message's data and store it.
 		var mainarray = theMessageEvent.data;
 		
-		// Loop through each class.
-		for (var i = 0; i < mainarray.length; i++) {
-		//for (var i = 0; i < 2; i++) {
-			// Alternate colours for the table rows.
+		// Start the string, and include the quarter that the popover is listing. The quarter is stored in the first element of the data passed.
+		str = "<tr><td colspan='4' class='cent bold top'>Class List (" + mainarray[0] + ")</td></tr>";
+		
+		// Loop through each class. We start at one, because the first element is the quarter.
+                for (var i = 1; i < mainarray.length; i++) {
+			// Alternate colors for the table rows.
 			if (i % 2 == 1) {
 				str += "<tr class='alt'>";
 			} else {
@@ -219,30 +246,52 @@ function respondToMessage(theMessageEvent) {
 			}
 			
 			// Add a table row for each class, with its department (mainarray[i][0]), number (mainarray[i][1]), and name (mainarray[i][2]).
-			str += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i][0].trimLeft().trimRight()) + "' target='_blank'>" + mainarray[i][0].trimLeft().trimRight() + "</a></td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
-			str += "<td>" + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
-			
-			// Loop through the array of meeting times for the class (mainarray[i][3]). We increment j by 3 each time, because we've stored 3 elements in the array for each meeting time.
-			for (var j = 0; j < mainarray[i][3].length; j += 3) {
-				// Use the same color as the class main row.
-				if (i % 2 == 1) {
-					str += "<tr class='alt small'>";
-				} else {
-					str += "<tr class='small'>";
-				}
+                        str += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i][0].trimLeft().trimRight()) + "' target='_blank'>" + mainarray[i][0].trimLeft().trimRight() + "</a>" + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
+                        str += "<td colspan='2'>" + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
+                        
+                        // Loop through the array of meeting times for the class (mainarray[i][3]). We increment j by 3 each time, because we've stored 3 elements in the array for each meeting time.
+                        for (var j = 0; j < mainarray[i][3].length; j += 3) {
+                                // Use the same color as the class main row.
+                                if (i % 2 == 1) {
+                                        str += "<tr class='alt small'>";
+                                } else {
+                                        str += "<tr class='small'>";
+                                }
 
-				// Add a table row for each meeting time, with its day, time, and room number. We use j as the offset of the first value for this meeting time
-				//    and add another offset to that (ranging 0-2) to get to the data we need. Every third value is the day value of another class meeting time.
-				str += "<td class='right'>" + mainarray[i][3][j+0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][3][j+1].trimLeft().trimRight() + "</td>";
-				str += "<td>" + "<a href='" + getBldgURL(mainarray[i][3][j+2].trimLeft().trimRight()) +"' target='_blank'>" + mainarray[i][3][j+2].trimLeft().trimRight() + "</a></td></tr>";
-			}
-			
-			// Add a string representation of the class. [This is NOT complete, it doesn't do class meeting times at all yet!]
-			global_txt += mainarray[i][0].trimLeft().trimRight() + " " + mainarray[i][1].trimLeft().trimRight() + " " + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "\n";
-		}
-				
-		// Set the table's content to our new content string.
-		main.innerHTML = str;
+                                // Add a table row for each meeting time, with its day, time, and room number. We use j as the offset of the first value for this meeting time
+                                //    and add another offset to that (ranging 0-2) to get to the data we need. Every third value is the day value of another class meeting time.
+                                str += "<td class='right'>" + mainarray[i][3][j+0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][3][j+1].trimLeft().trimRight() + "</td>";
+                                str += "<td>" + "<a href='" + getBldgURL(mainarray[i][3][j+2].trimLeft().trimRight()) +"' target='_blank'>" + mainarray[i][3][j+2].trimLeft().trimRight() + "</a>" + "</td>";
+                                // Add the last table cell for each row.
+                                str += "<td>";
+                                // Check if there is an instructor for this row.
+                                if (j/3 < mainarray[i][4].length) {
+                                        // Get the instructor.
+                                        var instructor = mainarray[i][4][j/3].trimLeft().trimRight().toLowerCase().capitalize();
+                                        // Get the instructor's last name (for RateMyProfessor).
+                                        var lastname = instructor.split(" ",1)[0];
+                                        // Check if the last name is usable (it's not empty or one character, and it doesn't have a period).
+                                        if ((lastname.length > 1) && (lastname.indexOf(".") == -1)) {
+                                                // Add a link to RateMyProfessor, searching by the last name.
+                                                str += "<a href='" + "http://www.ratemyprofessors.com/SearchProfs.jsp?letter=" + lastname +"' target='_blank'>";
+                                        }
+                                        // Output the instructor.
+                                        str += mainarray[i][4][j/3].trimLeft().trimRight().toLowerCase().capitalize();
+                                        // If we started a link, finish it.
+                                        if ((lastname.length > 1) && (lastname.indexOf(".") != -1)) {
+                                                str += "</a>";
+                                        }
+                                }
+                                // Finish the cell, and the row.
+                                str += "</td></tr>";
+                        }
+                        
+                        // Add a string representation of the class. [This is NOT complete, it doesn't do class meeting times at all yet!]
+                        global_txt += mainarray[i][0].trimLeft().trimRight() + " " + mainarray[i][1].trimLeft().trimRight() + " " + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "\n";
+                }
+                
+                // Set the table's content to our new content string.
+                main.innerHTML = str;
     }
 }
 
