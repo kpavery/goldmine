@@ -8,6 +8,8 @@ var meeting_times = new Array();
 var class_times = new Array();
 // instructors is an array for the professors of each class.
 var instructors = new Array();
+// finals is an array for the final exam times of each class.
+var finals = new Array();
 // Counter.
 var count = 0;
 
@@ -47,6 +49,19 @@ for (var i = 0; i < classes.length; i++) {
 		}
 				
 		class_names[count++] = classes[i].textContent;
+	}
+}
+
+var finalTable = document.getElementById("pageContent_FinalsGrid");
+if (finalTable) {
+	var numFinals = 0;
+	var rows = finalTable.getElementsByTagName("table");
+	alert(rows.length);
+	for (var i=0; i < rows.length; i++) {
+		var cells = rows[i].getElementsByClassName("clcellprimary");
+		if (cells.length > 1) {
+			finals[numFinals++] = cells[1].textContent;
+		}
 	}
 }
 
@@ -106,7 +121,7 @@ if (class_names.length > 0) {
 		}
 		
 		// Create a new array with the department, number, name, an array of meeting times, and the instructors. Add that as a new element of the passed data.
-		var final_split = new Array(split0,split2[0],split3,class_times[i],instructors[i]);
+		var final_split = new Array(split0,split2[0],split3,class_times[i],instructors[i],finals[i]);
 		// Offset the index at one, because the first element is the quarter.
 		pass_data[i+1] = final_split;
 	}
