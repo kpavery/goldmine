@@ -239,6 +239,7 @@ var haveFinals;
 function respondToMessage(theMessageEvent) {
 	// We are only interested in "classData" messages, and we want to ignore the rest.
     if(theMessageEvent.name === "classData") {
+	    var height = 0;
 	    haveFinals = false;
 	    
     	// main is the element (a table) that we will insert our data into to display it to the user.
@@ -253,6 +254,7 @@ function respondToMessage(theMessageEvent) {
 		// Start the string, and include the quarter that the popover is listing. The quarter is stored in the first element of the data passed.
 		str = "<tr><td colspan='4' class='cent bold top'>Class List (" + mainarray[0] + ")</td></tr>";
 		finalStr = "<tr><td colspan='4' class='cent bold top'>Final Exams (" + mainarray[0] + ")</td></tr>";
+		height += 30;
 		
 		// Loop through each class. We start at one, because the first element is the quarter.
 		for (var i = 1; i < mainarray.length; i++) {
@@ -268,6 +270,7 @@ function respondToMessage(theMessageEvent) {
 			// Add a table row for each class, with its department (mainarray[i][0]), number (mainarray[i][1]), and name (mainarray[i][2]).
 			str += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i][0].trimLeft().trimRight()) + "' target='_blank'>" + mainarray[i][0].trimLeft().trimRight() + "</a>" + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
 			str += "<td colspan='2'>" + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
+			height += 30;
 			
 			finalStr += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i][0].trimLeft().trimRight()) + "' target='_blank'>" + mainarray[i][0].trimLeft().trimRight() + "</a>" + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
 			
@@ -306,11 +309,13 @@ function respondToMessage(theMessageEvent) {
 				}
 				// Finish the cell, and the row.
 				str += "</td></tr>";
+				height += 24;
 			}
 			
 			finalStr += "<td colspan='2'>" + mainarray[i][5] + "</td></tr>";
 			
 			if (mainarray[i][5]) {
+				height += 27;
 				haveFinals = true;
 			}
 			
@@ -322,6 +327,7 @@ function respondToMessage(theMessageEvent) {
 		main.innerHTML = str;
 		
 		if (haveFinals) {
+			height += 27;
 			// Show the finals table.
 			finals.style.visibility="visible";
 			// Set the finals content to the string.
@@ -330,6 +336,8 @@ function respondToMessage(theMessageEvent) {
 			finals.style.visibility="hidden";
 			finals.innerHTML = "";
 		}
+		
+		safari.self.height = Math.max(height + 25, 360);
     }
 }
 
