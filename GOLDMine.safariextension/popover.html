@@ -112,7 +112,7 @@ function getBldg(bldgAndRoom)
 	if(bldg[0] == "SANTA" && bldg[1] == "CRUZ") return "Santa Cruz Hall";
 	if(bldg[0] == "SANTA" && bldg[1] == "ROSA") return "Santa Rosa Hall";
 	if(bldg[0] == "TD-E") return "Theater and Dance East";
-	if(bldg[0] == "ZODO BOWL") return "Zodo's Bowling & Beyond";
+	if(bldg[0] == "ZODO") return "Zodo's Bowling & Beyond";
 	return bldgAndRoom;
 }
 
@@ -124,7 +124,7 @@ function getBldgURL(bldgAndRoom)
 	if(abbrevs.indexOf(bldg[0])!=-1) 
 		returnURL = "http://earth.geog.ucsb.edu/icm/index.html?bldg=" + bldgs[bldg[0]].icmname + "&room=" + bldg[1];
 	else
-		returnURL = "http://maps.google.com/maps?q=" + getBldg(bldgAndRoom) + ",+Isla+Vista,+CA";
+		returnURL = "http://maps.google.com/maps?q=" + encodeURIComponent(getBldg(bldgAndRoom)) + ",+Isla+Vista,+CA";
 	return returnURL;
 }
 
@@ -259,7 +259,7 @@ function respondToMessage(theMessageEvent) {
 				// Add a table row for each meeting time, with its day, time, and room number. We use j as the offset of the first value for this meeting time
 				//    and add another offset to that (ranging 0-2) to get to the data we need. Every third value is the day value of another class meeting time.
 				str += "<td class='right'>" + mainarray[i][3][j+0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][3][j+1].trimLeft().trimRight() + "</td>";
-				str += "<td>" + "<a href='" + getBldgURL(mainarray[i][3][j+2].trimLeft().trimRight()) +"' target='_blank'>" + mainarray[i][3][j+2].trimLeft().trimRight() + "</a>" + "</td>";
+				str += "<td>" + "<a href=\"" + getBldgURL(mainarray[i][3][j+2].trimLeft().trimRight()) +"\" target='_blank'>" + mainarray[i][3][j+2].trimLeft().trimRight() + "</a>" + "</td>";
 				// Add the last table cell for each row.
 				str += "<td>";
 				// Check if there is an instructor for this row.
