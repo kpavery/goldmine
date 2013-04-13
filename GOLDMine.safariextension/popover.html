@@ -223,17 +223,20 @@ var str = "";
 
 // finalStr is an HTML/string version of the final schedule.
 var finalStr = "";
+// haveFinals is a boolean which tells us whether we have finals for this quarter (past quarters don't have final information).
+var haveFinals;
 
 // This function responds to messages sent from other places in the browser runtime.
 function respondToMessage(theMessageEvent) {
 	// We are only interested in "classData" messages, and we want to ignore the rest.
     if(theMessageEvent.name === "classData") {
+	    haveFinals = false;
+	    
     	// main is the element (a table) that we will insert our data into to display it to the user.
 		var main = document.getElementById("main");
 		
 		// finals is the element (a table) that we will insert final exam information into.
 		var finals = document.getElementById("finals");
-		finals.style.visibility="visible";
 				
 		// Get the message's data and store it.
 		var mainarray = theMessageEvent.message;
@@ -298,6 +301,10 @@ function respondToMessage(theMessageEvent) {
 			
 			finalStr += "<td colspan='2'>" + mainarray[i][5] + "</td></tr>";
 			
+			if (mainarray[i][5]) {
+				haveFinals = true;
+			}
+			
 			// Add a string representation of the class. [This is NOT complete, it doesn't do class meeting times at all yet!]
 			global_txt += mainarray[i][0].trimLeft().trimRight() + " " + mainarray[i][1].trimLeft().trimRight() + " " + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "\n";
 		}
@@ -305,8 +312,15 @@ function respondToMessage(theMessageEvent) {
 		// Set the table's content to our new content string.
 		main.innerHTML = str;
 		
-		// Set the finals content to the string.
-		finals.innerHTML = finalStr;
+		if (haveFinals) {
+			// Show the finals table.
+			finals.style.visibility="visible";
+			// Set the finals content to the string.
+			finals.innerHTML = finalStr;
+		} else {
+			finals.style.visibility="hidden";
+			finals.innerHTML = "";
+		}
     }
 }
 
