@@ -56,7 +56,6 @@ var finalTable = document.getElementById("pageContent_FinalsGrid");
 if (finalTable) {
 	var numFinals = 0;
 	var rows = finalTable.getElementsByTagName("table");
-	alert(rows.length);
 	for (var i=0; i < rows.length; i++) {
 		var cells = rows[i].getElementsByClassName("clcellprimary");
 		if (cells.length > 1) {
