@@ -81,7 +81,7 @@ a:hover {
 	margin-top: 5px;
 }
 
-#finals td {
+.finalsrow td {
 	font-size: .80em;
 }
 
@@ -263,10 +263,10 @@ function respondToMessage(theMessageEvent) {
 			// Alternate colours for the table rows and the final table row.
 			if (i % 2 == 1) {
 				str += "<tr class='alt'>";
-				finalStr += "<tr class='alt'>";
+				finalStr += "<tr class='finalsrow alt'>";
 			} else {
 				str += "<tr>";
-				finalStr += "<tr>";
+				finalStr += "<tr class='finalsrow'>";
 			}
 			
 			// Add a table row for each class, with its department (mainarray[i][0]), number (mainarray[i][1]), and name (mainarray[i][2]).
@@ -349,7 +349,7 @@ function respondToMessage(theMessageEvent) {
 		}
 		
 		// Set the popover height to the computed height.
-		safari.self.height = Math.max(height + 25, 360);
+		safari.self.height = Math.max(height + 30, 360);
     }
 }
 
