@@ -122,7 +122,7 @@ function getBldgURL(bldgAndRoom)
 	var bldg = bldgAndRoom.split(" ");
 	var returnURL;
 	if(abbrevs.indexOf(bldg[0])!=-1) 
-		returnURL = "http://earth.geog.ucsb.edu/icm/index.html?bldg=" + bldgs[bldg[0]].icmname + "&room=" + bldg[1];
+		returnURL = "http://map.geog.ucsb.edu/?bldg=" + bldgs[bldg[0]].icmname + "&room=" + bldg[1];
 	else
 		returnURL = "http://maps.google.com/maps?q=" + encodeURIComponent(getBldg(bldgAndRoom)) + ",+Isla+Vista,+CA";
 	return returnURL;
