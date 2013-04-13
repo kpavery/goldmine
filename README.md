@@ -13,6 +13,7 @@ GOLDMine's current features include:
 - Get course data from GOLD
 - Allow students to quickly look up professors on RateMyProfessors
 - Allow students to view each classroom on an interactive map of UCSB
+- Allow students to view the websites of departments they are taking classes in
 
 Future
 ------
