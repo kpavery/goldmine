@@ -271,7 +271,7 @@ function respondToMessage(theMessageEvent) {
 					// Check if the last name is usable (it's not empty or one character, and it doesn't have a period).
 					if ((lastname.length > 1) && (lastname.indexOf(".") == -1)) {
 						// Add a link to RateMyProfessor, searching by the last name.
-						str += "<a href='" + "http://www.ratemyprofessors.com/SearchProfs.jsp?letter=" + lastname + "'>";
+						str += "<a href='" + "http://www.ratemyprofessors.com/search.jsp?query=" + lastname + "+University+California+Santa+Barbara'>";
 					}
 					// Output the instructor.
 					str += mainarray[i][4][j/3].trimLeft().trimRight().toLowerCase().capitalize();
