@@ -240,6 +240,7 @@ function respondToMessage(theMessageEvent) {
 		
 		// Start the string, and include the quarter that the popover is listing. The quarter is stored in the first element of the data passed.
 		str = "<tr><td colspan='4' class='cent bold top'>Class List (" + mainarray[0] + ")</td></tr>";
+		finalStr = "<tr><td colspan='4' class='cent bold top'>Final Exams (" + mainarray[0] + ")</td></tr>";
 		
 		// Loop through each class. We start at one, because the first element is the quarter.
 		for (var i = 1; i < mainarray.length; i++) {
