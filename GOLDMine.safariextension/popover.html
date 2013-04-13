@@ -112,7 +112,7 @@ function getBldg(bldgAndRoom)
 	if(bldg[0] == "SANTA" && bldg[1] == "CRUZ") return "Santa Cruz Hall";
 	if(bldg[0] == "SANTA" && bldg[1] == "ROSA") return "Santa Rosa Hall";
 	if(bldg[0] == "TD-E") return "Theater and Dance East";
-	if(bldg[0] == "ZODO") return "Zodo's Bowling & Beyond";
+	if(bldg[0] == "ZODO BOWL") return "Zodo's Bowling & Beyond";
 	return bldgAndRoom;
 }
 
@@ -287,7 +287,7 @@ function respondToMessage(theMessageEvent) {
 			// Add a string representation of the class. [This is NOT complete, it doesn't do class meeting times at all yet!]
 			global_txt += mainarray[i][0].trimLeft().trimRight() + " " + mainarray[i][1].trimLeft().trimRight() + " " + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "\n";
 		}
-		
+				
 		// Set the table's content to our new content string.
 		main.innerHTML = str;
     }
