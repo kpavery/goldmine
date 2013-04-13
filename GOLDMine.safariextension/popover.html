@@ -254,11 +254,13 @@ function respondToMessage(theMessageEvent) {
 		// Start the string, and include the quarter that the popover is listing. The quarter is stored in the first element of the data passed.
 		str = "<tr><td colspan='4' class='cent bold top'>Class List (" + mainarray[0] + ")</td></tr>";
 		finalStr = "<tr><td colspan='4' class='cent bold top'>Final Exams (" + mainarray[0] + ")</td></tr>";
+		
+		// Add the height of the header to the height.
 		height += 30;
 		
 		// Loop through each class. We start at one, because the first element is the quarter.
 		for (var i = 1; i < mainarray.length; i++) {
-			// Alternate colours for the table rows.
+			// Alternate colours for the table rows and the final table row.
 			if (i % 2 == 1) {
 				str += "<tr class='alt'>";
 				finalStr += "<tr class='alt'>";
@@ -272,6 +274,7 @@ function respondToMessage(theMessageEvent) {
 			str += "<td colspan='2'>" + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
 			height += 30;
 			
+			// Add the department and class to the final table content.
 			finalStr += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i][0].trimLeft().trimRight()) + "' target='_blank'>" + mainarray[i][0].trimLeft().trimRight() + "</a>" + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
 			
 			// Loop through the array of meeting times for the class (mainarray[i][3]). We increment j by 3 each time, because we've stored 3 elements in the array for each meeting time.
@@ -309,13 +312,18 @@ function respondToMessage(theMessageEvent) {
 				}
 				// Finish the cell, and the row.
 				str += "</td></tr>";
+				// Add the height of this row to the height.
 				height += 24;
 			}
 			
+			// Add the final time to the final table content.
 			finalStr += "<td colspan='2'>" + mainarray[i][5] + "</td></tr>";
 			
+			// If the final is defined, we do have finals.
 			if (mainarray[i][5]) {
+				// Add this row to the height.
 				height += 27;
+				// Update our final boolean to show that we do have finals.
 				haveFinals = true;
 			}
 			
@@ -326,17 +334,21 @@ function respondToMessage(theMessageEvent) {
 		// Set the table's content to our new content string.
 		main.innerHTML = str;
 		
+		// If we have finals, show the table, otherwise hide it.
 		if (haveFinals) {
+			// Add the finals header to the height.
 			height += 27;
 			// Show the finals table.
 			finals.style.visibility="visible";
 			// Set the finals content to the string.
 			finals.innerHTML = finalStr;
 		} else {
+			// Hide the final table and reset its content.
 			finals.style.visibility="hidden";
 			finals.innerHTML = "";
 		}
 		
+		// Set the popover height to the computed height.
 		safari.self.height = Math.max(height + 25, 360);
     }
 }
