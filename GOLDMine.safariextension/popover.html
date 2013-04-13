@@ -221,12 +221,18 @@ var global_txt = "";
 // str is an HTML/string version of the class schedule (output to the user in this popover).
 var str = "";
 
+// finalStr is an HTML/string version of the final schedule.
+var finalStr = "";
+
 // This function responds to messages sent from other places in the browser runtime.
 function respondToMessage(theMessageEvent) {
 	// We are only interested in "classData" messages, and we want to ignore the rest.
     if(theMessageEvent.name === "classData") {
     	// main is the element (a table) that we will insert our data into to display it to the user.
 		var main = document.getElementById("main");
+		
+		// finals is the element (a table) that we will insert final exam information into.
+		var finals = document.getElementById("finals");
 				
 		// Get the message's data and store it.
 		var mainarray = theMessageEvent.message;
@@ -239,13 +245,17 @@ function respondToMessage(theMessageEvent) {
 			// Alternate colours for the table rows.
 			if (i % 2 == 1) {
 				str += "<tr class='alt'>";
+				finalStr += "<tr class='alt'>";
 			} else {
 				str += "<tr>";
+				finalStr += "<tr>";
 			}
 			
 			// Add a table row for each class, with its department (mainarray[i][0]), number (mainarray[i][1]), and name (mainarray[i][2]).
 			str += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i][0].trimLeft().trimRight()) + "' target='_blank'>" + mainarray[i][0].trimLeft().trimRight() + "</a>" + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
 			str += "<td colspan='2'>" + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
+			
+			finalStr += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i][0].trimLeft().trimRight()) + "' target='_blank'>" + mainarray[i][0].trimLeft().trimRight() + "</a>" + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
 			
 			// Loop through the array of meeting times for the class (mainarray[i][3]). We increment j by 3 each time, because we've stored 3 elements in the array for each meeting time.
 			for (var j = 0; j < mainarray[i][3].length; j += 3) {
@@ -284,12 +294,17 @@ function respondToMessage(theMessageEvent) {
 				str += "</td></tr>";
 			}
 			
+			finalStr += "<td colspan='2'>" + mainarray[i][5] + "</td></tr>";
+			
 			// Add a string representation of the class. [This is NOT complete, it doesn't do class meeting times at all yet!]
 			global_txt += mainarray[i][0].trimLeft().trimRight() + " " + mainarray[i][1].trimLeft().trimRight() + " " + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "\n";
 		}
 		
 		// Set the table's content to our new content string.
 		main.innerHTML = str;
+		
+		// Set the finals content to the string.
+		finals.innerHTML = finalStr;
     }
 }
 
@@ -341,6 +356,9 @@ document.onclick=manageLinks;
 <body>
 <table id="main" cellspacing="0">
 <tr><td class='cent'>Please go to your course schedule page in GOLD (or reload it if you are already there).</td></tr>
+</table>
+<table id="finals" cellspacing="0">
+<tr><td class='cent'></td></tr>
 </table>
 </body>
 </html>
