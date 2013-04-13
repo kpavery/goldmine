@@ -88,21 +88,20 @@ if (class_names.length > 0) {
 	
 	// Loop through all the classes.
 	for (var i = 0; i < class_names.length; i++) {
-		// Split on 3 spaces. This should split the the class name into two elements, department and number/name. The class name usually looks
-		//    something like "CMPSCCS   1L - PROGRAMMING LAB".
+		// Split based on the first number, which is part of the course number.
 		var num = /\d/;
 		var firstNum = class_names[i].search(num);
 		var split0 = class_names[i].substr(0,firstNum);
 		var split1 = class_names[i].substr(firstNum);
-		// Split the second part by hyphen, which should give the number and name separately.
+		// Split the second part by hyphen surrounded by spaces, which should give the number and name separately.
 		var split2 = split1.split(" - ");
 
 		var split3 = split2[1];
-		// Another hyphen was in the title so extra splitting occurred
+		// Another hyphen with spaces was in the title so extra splitting occurred
 		if (split2.length > 2) {
 			for(var j = 2; j < split2.length; j++) {
 				// Append the parts that shouldn't have been split off
-				split3 += "-"+split2[j];
+				split3 += " - "+split2[j];
 			}
 		}
 		
