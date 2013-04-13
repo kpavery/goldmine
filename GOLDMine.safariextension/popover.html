@@ -233,6 +233,7 @@ function respondToMessage(theMessageEvent) {
 		
 		// finals is the element (a table) that we will insert final exam information into.
 		var finals = document.getElementById("finals");
+		finals.style.visibility="visible";
 				
 		// Get the message's data and store it.
 		var mainarray = theMessageEvent.message;
@@ -357,7 +358,7 @@ document.onclick=manageLinks;
 <table id="main" cellspacing="0">
 <tr><td class='cent'>Please go to your course schedule page in GOLD (or reload it if you are already there).</td></tr>
 </table>
-<table id="finals" cellspacing="0">
+<table id="finals" style="visibility:hidden; margin-top: 5px;" cellspacing="0">
 <tr><td class='cent'></td></tr>
 </table>
 </body>
