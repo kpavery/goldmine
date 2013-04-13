@@ -18,14 +18,15 @@ var classes = document.getElementsByClassName("clcellprimaryalt");
 for (var i = 0; i < classes.length; i++) {
 	// We only want divs, those are the class name tags. Ignore everything else.
 	if (classes[i].tagName.toLowerCase() == "div") {
-		// Get the meeting times for each class. They seem to be in an element with id "ctl00_pageContent_CourseList_ctl0X_MeetingTimesList"
-		//    where X is the index of the course in GOLD table, indexed from 1 (i.e. 1, 2, 3, 4, etc).
-		var meeting_time = document.getElementById("ctl00_pageContent_CourseList_ctl0" + (count + 1) + "_MeetingTimesList");
+		// Get the meeting times for each class. They seem to be in an element with id "pageContent_CourseList_MeetingTimesList_X"
+		//    where X is the index of the course in GOLD table, indexed from 0 (i.e. 0, 1, 2, 3, 4, etc).
+		var meeting_time = document.getElementById("pageContent_CourseList_MeetingTimesList_" + count);
+
 		// Add that to the meeting_times array, and add the class name to the class_names array.
 		meeting_times[count] = meeting_time;
 		
 		// Get the instructor from the page.
-		var instructor = document.getElementById("ctl00_pageContent_CourseList_ctl0" + (count + 1) + "_InstructorList");
+		var instructor = document.getElementById("pageContent_CourseList_InstructorList_" + count);
 		
 		// Check f we found instructors.		
 		if (instructor) {
