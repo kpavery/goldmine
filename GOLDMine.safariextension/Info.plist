@@ -56,7 +56,7 @@
 		</dict>
 	</dict>
 	<key>Description</key>
-	<string>Extension to get calendar data from GOLD.</string>
+	<string>Extension to get course data from UCSB GOLD.</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>
@@ -74,6 +74,6 @@
 		</dict>
 	</dict>
 	<key>Website</key>
-	<string>http://kpavery.com</string>
+	<string>http://kpavery.github.io/goldmine</string>
 </dict>
 </plist>
