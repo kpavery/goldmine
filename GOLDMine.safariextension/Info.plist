@@ -18,6 +18,8 @@
 	<string>1</string>
 	<key>Chrome</key>
 	<dict>
+		<key>Database Quota</key>
+		<real>1048576</real>
 		<key>Popovers</key>
 		<array>
 			<dict>
