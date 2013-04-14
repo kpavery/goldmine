@@ -224,6 +224,25 @@ function getDeptURL(dept)
 	return ("http://www.google.com/search?q=ucsb+" + dept +"+department");
 }
 
+function updateSelect() {
+	var select = document.getElementById("quarter");
+	var selected = select.selectedIndex;
+	select.options.length = 0;
+	var local = JSON.parse(localStorage.getItem("mainarray"));
+	
+	for (var key in local) {
+		var option = document.createElement("option");
+		option.text = key;
+		select.add(option,null);
+	}
+	
+	if (selected < 0 || selected > select.options.length) {
+		selected = 0;
+	}
+	
+	select.selectedIndex = selected;
+}
+
 // global_txt is a text version of the class schedule (hopefully used in exporting later).
 var global_txt = "";
 
@@ -241,15 +260,30 @@ function respondToMessage(theMessageEvent) {
     if(theMessageEvent.name === "classData") {
 	    // Get the message's data and store it.
 	    var mainarray = theMessageEvent.message;
+	    
+	    var local = JSON.parse(localStorage.getItem("mainarray"));
+	    
+	    var quarter = mainarray[0];
+	    	    
+	    if (!local || !(local === Object(local))) {
+		   	local = new Object();
+	   	}
+	   	
+	   	local[quarter] = mainarray.slice(1);
+	   	
+	    localStorage.setItem("mainarray", JSON.stringify(local));
+	    
+	    updateSelect();
+
 	    // Update the popover with that data.
-	    update(mainarray);
+	    update(local);
     }
 }
 
 // This function updates the popover given an array of data.
 function update(mainarray) {
-	// Initial height is zero.
-	var height = 0;
+	// Initial height is 18, which is the height of the select element.
+	var height = 18;
 	// Initially, we have no final information.
 	haveFinals = false;
 
@@ -258,18 +292,21 @@ function update(mainarray) {
 
 	// finals is the element (a table) that we will insert final exam information into.
 	var finals = document.getElementById("finals");
+	
+	var select = document.getElementById("quarter");
+	var quarter = select.options[select.selectedIndex].text;
 
-	localStorage.setItem("mainarray", JSON.stringify(mainarray));
+	mainarray = mainarray[quarter];
 
 	// Start the string, and include the quarter that the popover is listing. The quarter is stored in the first element of the data passed.
-	str = "<tr><td colspan='4' class='cent bold top'>Class List (" + mainarray[0] + ")</td></tr>";
-	finalStr = "<tr><td colspan='4' class='cent bold top'>Final Exams (" + mainarray[0] + ")</td></tr>";
+	str = "<tr><td colspan='4' class='cent bold top'>Class List (" + quarter + ")</td></tr>";
+	finalStr = "<tr><td colspan='4' class='cent bold top'>Final Exams (" + quarter + ")</td></tr>";
 
 	// Add the height of the header to the height.
 	height += 30;
 	
-	// Loop through each class. We start at one, because the first element is the quarter.
-	for (var i = 1; i < mainarray.length; i++) {
+	// Loop through each class.
+	for (var i = 0; i < mainarray.length; i++) {
 		// Alternate colours for the table rows and the final table row.
 		if (i % 2 == 1) {
 			str += "<tr class='alt'>";
@@ -359,7 +396,7 @@ function update(mainarray) {
 	}
 
 	// Set the popover height to the computed height.
-	safari.self.height = Math.max(height + 30, 360);
+	safari.self.height = Math.max(height + 34, 360);
 }
 
 
@@ -406,10 +443,19 @@ document.onclick=manageLinks;
 
 // Function to retrieve data from local storage and display it.
 function getStorage(event) {
+	initial();
+}
+
+function selectChanged() {
 	var mainarray = JSON.parse(localStorage.getItem("mainarray"));
 	if (mainarray) {
 		update(mainarray);
 	}
+}
+
+function initial() {
+	updateSelect();
+	selectChanged();
 }
 
 // Tell Safari to attempt to get data from local storage and update the popover before displaying it.
@@ -419,6 +465,8 @@ safari.application.addEventListener("popover",getStorage,false);
 </script>
 </head>
 <body>
+<select id="quarter" onchange="selectChanged();">
+</select>
 <table id="main" cellspacing="0">
 <tr><td class='cent'>Please go to your course schedule page in GOLD (or reload it if you are already there).</td></tr>
 </table>
