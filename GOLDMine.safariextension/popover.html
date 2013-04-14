@@ -1,5 +1,5 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>GOLDMine</title>
 
@@ -99,7 +99,7 @@ a:hover {
 </style>
 
 <script type="text/javascript">
-
+<!--
 // This function adds .capitalize() to string variables. It works with punctuation now.
 String.prototype.capitalize = function(){
 	"use strict";
@@ -551,12 +551,14 @@ function initial() {
 // Tell Safari to attempt to get data from local storage and update the popover before displaying it.
 safari.application.addEventListener("popover",initial,false);
 
+-->
 // The HTML below is the page structure, and the default text (that is displayed when no course data has been loaded).
 </script>
 </head>
 <body>
 <div class="right" id="quarterwhole">
 Select quarter: <select id="quarter" onchange="selectChanged();">
+<option></option>
 </select>
 </div>
 <table id="main" cellspacing="0">
