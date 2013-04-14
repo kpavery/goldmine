@@ -105,22 +105,23 @@ if (class_names.length > 0) {
 		// Split based on the first number, which is part of the course number.
 		var num = /\d/;
 		var firstNum = class_names[i].search(num);
-		var split0 = class_names[i].substr(0,firstNum);
+		var department = class_names[i].substr(0,firstNum);
 		var split1 = class_names[i].substr(firstNum);
 		// Split the second part by hyphen surrounded by spaces, which should give the number and name separately.
 		var split2 = split1.split(" - ");
+		var number = split2[0];
 
-		var split3 = split2[1];
+		var name = split2[1];
 		// Another hyphen with spaces was in the title so extra splitting occurred
 		if (split2.length > 2) {
 			for(var j = 2; j < split2.length; j++) {
 				// Append the parts that shouldn't have been split off
-				split3 += " - "+split2[j];
+				name += " - "+split2[j];
 			}
 		}
 		
 		// Create a new array with the department, number, name, an array of meeting times, and the instructors. Add that as a new element of the passed data.
-		var final_split = new Array(split0,split2[0],split3,class_times[i],instructors[i],finals[i]);
+		var final_split = {'department': department,'number': number,'name': name,'meetingTimes': class_times[i],'instructor': instructors[i],'final': finals[i]);
 		// Offset the index at one, because the first element is the quarter.
 		pass_data[i+1] = final_split;
 	}
