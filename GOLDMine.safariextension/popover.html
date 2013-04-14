@@ -268,7 +268,7 @@ function respondToMessage(theMessageEvent) {
 	    var quarter = mainarray[0];
 	    
 	    // If we didn't find local data, or the local data is not an assoc. array, make a new one.	    
-	    if (!local || !(local === Object(local))) {
+	    if (!local || !(local.constructor === Object)) {
 		   	local = new Object();
 	   	}
 	   	
