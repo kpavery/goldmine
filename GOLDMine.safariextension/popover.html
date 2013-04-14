@@ -267,29 +267,38 @@ function compareQuarters(quarter1, quarter2) {
 	}
 }
 
+// Function to update the quarter selection control.
 function updateSelect() {
+	// Get the control and its selected index.
 	var select = document.getElementById("quarter");
 	var selected = select.selectedIndex;
+	
+	// Reset the control to have no options.
 	select.options.length = 0;
+	
+	// Get the local data, for all quarters.
 	var local = JSON.parse(localStorage.getItem("mainarray"));
 	
+	// Get the keys for the local data (quarter names).
 	var keys = new Array();
 	for (var key in local) {
 		keys.push(key);
 	}
 	
+	// Sort the quarter names.
 	keys.sort(compareQuarters);
 	
+	// Add each quarter name to the control.
 	for (var i = 0; i < keys.length; i++) {
 		var option = document.createElement("option");
 		option.text = keys[i];
 		select.add(option,null);
 	}
 	
+	// If the selected index we saw at the beginning was valid, select that index again (for persistent selection).
 	if (selected < 0 || selected > select.options.length) {
 		selected = 0;
 	}
-	
 	select.selectedIndex = selected;
 }
 
