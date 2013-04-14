@@ -280,15 +280,15 @@ function update(mainarray) {
 		}
 
 		// Add a table row for each class, with its department (mainarray[i][0]), number (mainarray[i][1]), and name (mainarray[i][2]).
-		str += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i][0].trimLeft().trimRight()) + "' target='_blank'>" + mainarray[i][0].trimLeft().trimRight() + "</a>" + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
-		str += "<td colspan='2'>" + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
+		str += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i]['department'].trimLeft().trimRight()) + "' target='_blank'>" + mainarray[i]['department'].trimLeft().trimRight() + "</a>" + "</td><td class='cent'>" + mainarray[i]['number'].trimLeft().trimRight() + "</td>";
+		str += "<td colspan='2'>" + mainarray[i]['name'].trimLeft().trimRight().toLowerCase().capitalize() + "</td></tr>";
 		height += 30;
 
 		// Add the department and class to the final table content.
-		finalStr += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i][0].trimLeft().trimRight()) + "' target='_blank'>" + mainarray[i][0].trimLeft().trimRight() + "</a>" + "</td><td class='cent'>" + mainarray[i][1].trimLeft().trimRight() + "</td>";
+		finalStr += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i]['department'].trimLeft().trimRight()) + "' target='_blank'>" + mainarray[i]['department'].trimLeft().trimRight() + "</a>" + "</td><td class='cent'>" + mainarray[i]['number'].trimLeft().trimRight() + "</td>";
 
 		// Loop through the array of meeting times for the class (mainarray[i][3]). We increment j by 3 each time, because we've stored 3 elements in the array for each meeting time.
-		for (var j = 0; j < mainarray[i][3].length; j += 3) {
+		for (var j = 0; j < mainarray[i]['meetingTimes'].length; j += 3) {
 			// Use the same color as the class main row.
 			if (i % 2 == 1) {
 				str += "<tr class='alt small'>";
@@ -298,14 +298,14 @@ function update(mainarray) {
 
 			// Add a table row for each meeting time, with its day, time, and room number. We use j as the offset of the first value for this meeting time
 			//    and add another offset to that (ranging 0-2) to get to the data we need. Every third value is the day value of another class meeting time.
-			str += "<td class='right'>" + mainarray[i][3][j+0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i][3][j+1].trimLeft().trimRight() + "</td>";
-			str += "<td>" + "<a href=\"" + getBldgURL(mainarray[i][3][j+2].trimLeft().trimRight()) +"\" target='_blank'>" + mainarray[i][3][j+2].trimLeft().trimRight() + "</a>" + "</td>";
+			str += "<td class='right'>" + mainarray[i]['meetingTimes'][j+0].trimLeft().trimRight() + "</td><td class='cent'>" + mainarray[i]['meetingTimes'][j+1].trimLeft().trimRight() + "</td>";
+			str += "<td>" + "<a href=\"" + getBldgURL(mainarray[i]['meetingTimes'][j+2].trimLeft().trimRight()) +"\" target='_blank'>" + mainarray[i]['meetingTimes'][j+2].trimLeft().trimRight() + "</a>" + "</td>";
 			// Add the last table cell for each row.
 			str += "<td>";
 			// Check if there is an instructor for this row.
-			if (j/3 < mainarray[i][4].length) {
+			if (j/3 < mainarray[i]['instructor'].length) {
 				// Get the instructor.
-				var instructor = mainarray[i][4][j/3].trimLeft().trimRight().toLowerCase().capitalize();
+				var instructor = mainarray[i]['instructor'][j/3].trimLeft().trimRight().toLowerCase().capitalize();
 				// Get the instructor's last name (for RateMyProfessor).
 				var lastname = instructor.split(" ",1)[0];
 				// Check if the last name is usable (it's not empty or one character, and it doesn't have a period).
@@ -314,7 +314,7 @@ function update(mainarray) {
 					str += "<a href='" + "http://www.ratemyprofessors.com/search.jsp?query=" + lastname + "+University+California+Santa+Barbara'>";
 				}
 				// Output the instructor.
-				str += mainarray[i][4][j/3].trimLeft().trimRight().toLowerCase().capitalize();
+				str += mainarray[i]['instructor'][j/3].trimLeft().trimRight().toLowerCase().capitalize();
 				// If we started a link, finish it.
 				if ((lastname.length > 1) && (lastname.indexOf(".") != -1)) {
 					str += "</a>";
@@ -327,10 +327,10 @@ function update(mainarray) {
 		}
 
 		// Add the final time to the final table content.
-		finalStr += "<td colspan='2'>" + mainarray[i][5] + "</td></tr>";
+		finalStr += "<td colspan='2'>" + mainarray[i]['final'] + "</td></tr>";
 
 		// If the final is defined, we do have finals.
-		if (mainarray[i][5]) {
+		if (mainarray[i]['final']) {
 			// Add this row to the height.
 			height += 27;
 			// Update our final boolean to show that we do have finals.
@@ -338,7 +338,7 @@ function update(mainarray) {
 		}
 
 		// Add a string representation of the class. [This is NOT complete, it doesn't do class meeting times at all yet!]
-		global_txt += mainarray[i][0].trimLeft().trimRight() + " " + mainarray[i][1].trimLeft().trimRight() + " " + mainarray[i][2].trimLeft().trimRight().toLowerCase().capitalize() + "\n";
+		global_txt += mainarray[i]['department'].trimLeft().trimRight() + " " + mainarray[i]['number'].trimLeft().trimRight() + " " + mainarray[i]['name'].trimLeft().trimRight().toLowerCase().capitalize() + "\n";
 	}
 
 	// Set the table's content to our new content string.
