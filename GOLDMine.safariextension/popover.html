@@ -293,7 +293,7 @@ function updateSelect() {
 	var local = JSON.parse(localStorage.getItem("mainarray"));
 	
 	// Get the keys for the local data (quarter names).
-	var keys = new Array();
+	var keys = [];
 	for (var key in local) {
 		keys.push(key);
 	}
@@ -343,8 +343,8 @@ function respondToMessage(theMessageEvent) {
 		var quarter = mainarray[0];
 		
 		// If we didn't find local data, or the local data is not an assoc. array, make a new one.
-		if (!local || !(local.constructor === Object)) {
-			local = new Object();
+		if (!local || (local.constructor !== Object)) {
+			local = {};
 		}
 		
 		// Set the quarter that we got data for.
@@ -391,7 +391,7 @@ function update(mainarray) {
 	// Loop through each class.
 	for (var i = 0; i < mainarray.length; i++) {
 		// Alternate colours for the table rows and the final table row.
-		if (i % 2 == 1) {
+		if (i % 2 === 1) {
 			str += "<tr class='alt'>";
 			finalStr += "<tr class='finalsrow alt'>";
 		} else {
@@ -410,7 +410,7 @@ function update(mainarray) {
 		// Loop through the array of meeting times for the class (mainarray[i][3]). We increment j by 3 each time, because we've stored 3 elements in the array for each meeting time.
 		for (var j = 0; j < mainarray[i]['meetingTimes'].length; j += 3) {
 			// Use the same color as the class main row.
-			if (i % 2 == 1) {
+			if (i % 2 === 1) {
 				str += "<tr class='alt small'>";
 			} else {
 				str += "<tr class='small'>";
