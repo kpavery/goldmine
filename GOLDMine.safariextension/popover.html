@@ -224,15 +224,65 @@ function getDeptURL(dept)
 	return ("http://www.google.com/search?q=ucsb+" + dept +"+department");
 }
 
+// Comparison function for quarters.
+function compareQuarters(quarter1, quarter2) {
+	// Split into quarter name and year.
+	var split1 = quarter1.split(" ");
+	var split2 = quarter2.split(" ");
+	
+	// Get years.
+	var year1 = parseInt(split1[1]);
+	var year2 = parseInt(split2[1]);
+	
+	// Get quarter names.
+	var name1 = split1[0];
+	var name2 = split1[0];
+	
+	// If the years are different, that is sufficient for determining which quarter is first.
+	if (year1 != year2) {
+		return year2 - year1;
+	} else {
+		// Otherwise, compare for each quarter.
+		if (name1 == "Fall") {
+			// Fall is the last quarter always.
+			return -1;
+		} else if (name1 == "Winter") {
+			// Winter is always the first quarter.
+			return 1;
+		} else if (name1 == "Spring") {
+			// Spring is after winter, but before all the others.
+			if (name2 == "Winter") {
+				return -1;
+			} else {
+				return 1;
+			}
+		} else if (name1 == "Summer") {
+			// Summer is before fall, but after all the others.
+			if (name2 == "Fall") {
+				return 1;
+			} else {
+				return -1;
+			}
+		}
+	}
+}
+
 function updateSelect() {
 	var select = document.getElementById("quarter");
 	var selected = select.selectedIndex;
 	select.options.length = 0;
 	var local = JSON.parse(localStorage.getItem("mainarray"));
 	
+	var keys = new Array();
 	for (var key in local) {
+		keys.push(key);
+	}
+	
+	keys.sort(compareQuarters);
+	
+	for (var i = 0; i < keys.length; i++) {
 		var option = document.createElement("option");
-		option.text = key;
+		option.text = keys[i];
 		select.add(option,null);
 	}
 	
