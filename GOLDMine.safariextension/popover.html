@@ -295,7 +295,9 @@ function updateSelect() {
 	// Get the keys for the local data (quarter names).
 	var keys = [];
 	for (var key in local) {
-		keys.push(key);
+		if (local.hasOwnProperty(key)) {
+			keys.push(key);
+		}
 	}
 	
 	// Sort the quarter names.
