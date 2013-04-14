@@ -21,7 +21,7 @@ for (var i = 0; i < classes.length; i++) {
 	// We only want divs, those are the class name tags. Ignore everything else.
 	if (classes[i].tagName.toLowerCase() == "div") {
 		// Get the meeting times for each class. They seem to be in an element with id "pageContent_CourseList_MeetingTimesList_X"
-		//    where X is the index of the course in GOLD table, indexed from 0 (i.e. 0, 1, 2, 3, 4, etc).
+		//	where X is the index of the course in GOLD table, indexed from 0 (i.e. 0, 1, 2, 3, 4, etc).
 		var meeting_time = document.getElementById("pageContent_CourseList_MeetingTimesList_" + count);
 
 		// Add that to the meeting_times array, and add the class name to the class_names array.
@@ -68,11 +68,11 @@ if (finalTable) {
 if (class_names.length > 0) {
 	
 	// Loop through the array of meeting times. Each element of it is a tag that contains all the meeting times for a class
-	//    somewhere in it's child tree. This can be thought of as looping through the classes.
+	//	somewhere in it's child tree. This can be thought of as looping through the classes.
 	for (var i=0; i < meeting_times.length; i++) {
 		// The times are either of class "clcellprimary" or "clcellprimaryalt", depending on which row in the table the course is. GOLD
-		//    alternates colours for the table rows, and that's why it could be either. First check if it's primary, and if not, then get
-		//    primaryalt.
+		//	alternates colours for the table rows, and that's why it could be either. First check if it's primary, and if not, then get
+		//	primaryalt.
 		var cells = meeting_times[i].getElementsByClassName("clcellprimary");
 		if (cells.length == 0){
 			cells = meeting_times[i].getElementsByClassName("clcellprimaryalt");
@@ -84,8 +84,8 @@ if (class_names.length > 0) {
 		// Loop through all the cells that were found in the current meeting_times tag hierarchy. 
 		for (var j=0; j < cells.length; j++) {
 			// Check for a link (<a> tag) in the cell. If there is one, just get the content of that link. This is for the meeting locations, which
-			//    are linked to a popup. Otherwise just get the content of the tag (for everything but the meeting locations). Add them to the new
-			//    element in class_times.
+			//	are linked to a popup. Otherwise just get the content of the tag (for everything but the meeting locations). Add them to the new
+			//	element in class_times.
 			if (cells[j].getElementsByTagName("A").length != 0) {
 				class_times[i][j] = cells[j].getElementsByTagName("A")[0].textContent.trim();
 			} else {
