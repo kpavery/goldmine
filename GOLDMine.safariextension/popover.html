@@ -102,6 +102,7 @@ a:hover {
 
 // This function adds .capitalize() to string variables. It works with punctuation now.
 String.prototype.capitalize = function(){
+	"use strict";
 	return this.replace( /(^|\s|-|\/|\.)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
 };
 
@@ -117,6 +118,7 @@ for (var k = 0; k < bldgs.length; k++) {
 // Function for buildings that aren't supported by the geology department map.
 function getBldg(bldgAndRoom)
 {
+	"use strict";
 	var bldg = bldgAndRoom.split(" ");
 	if(bldg[0] === "494") {return "College of Creative Studies";}
 	if(bldg[0] === "479") {return "Old Gymnasium";}
@@ -139,6 +141,7 @@ function getBldg(bldgAndRoom)
 // Function to leverage the building information to build a map URL.
 function getBldgURL(bldgAndRoom)
 {
+	"use strict";
 	var bldg = bldgAndRoom.split(" ");
 	var returnURL;
 	if(abbrevs.indexOf(bldg[0]) > -1) { 
@@ -152,6 +155,7 @@ function getBldgURL(bldgAndRoom)
 // Function to get the URL of an arbitrary university department.
 function getDeptURL(dept)
 {
+	"use strict";
 	if(dept==="ANTH") {return "http://www.anth.ucsb.edu";}
 	if(dept==="ART CS") {return "http://www.ccs.ucsb.edu/art";}
 	if(dept==="ARTHI") {return "http://www.arthistory.ucsb.edu";}
@@ -239,6 +243,7 @@ function getDeptURL(dept)
 
 // Comparison function for quarters.
 function compareQuarters(quarter1, quarter2) {
+	"use strict";
 	// Split into quarter name and year.
 	var split1 = quarter1.split(" ");
 	var split2 = quarter2.split(" ");
@@ -282,6 +287,7 @@ function compareQuarters(quarter1, quarter2) {
 
 // Function to update the quarter selection control.
 function updateSelect() {
+	"use strict";
 	// Get the control and its selected index.
 	var select = document.getElementById("quarter");
 	var selected = select.selectedIndex;
@@ -333,6 +339,7 @@ var haveFinals;
 
 // This function responds to messages sent from other places in the browser runtime.
 function respondToMessage(theMessageEvent) {
+	"use strict";
 	// We are only interested in "classData" messages, and we want to ignore the rest.
 	if(theMessageEvent.name === "classData") {
 		// Get the message's data and store it.
@@ -365,6 +372,7 @@ function respondToMessage(theMessageEvent) {
 
 // This function updates the popover given an array of data.
 function update(mainarray) {
+	"use strict";
 	// Initial height is 18, which is the height of the select element.
 	var height = 23;
 	// Initially, we have no final information.
@@ -487,6 +495,7 @@ safari.application.addEventListener("message",respondToMessage,false);
 
 // Function to open links in new tabs.
 function manageLinks(event) {
+	"use strict";
 	if (event.target.href) {
 		// Get the active tab and an array of all the tabs.
 		var activeTab = safari.application.activeBrowserWindow.activeTab;
@@ -525,11 +534,13 @@ document.onclick=manageLinks;
 
 // Function to retrieve data from local storage and display it.
 function getStorage(event) {
+	"use strict";
 	initial();
 }
 
 // Quarter selection control changed, update the page.
 function selectChanged() {
+	"use strict";
 	var mainarray = JSON.parse(localStorage.getItem("mainarray"));
 	if (mainarray) {
 		update(mainarray);
@@ -538,6 +549,7 @@ function selectChanged() {
 
 // Function that updates the select control and updates the page, called before the page is shown.
 function initial() {
+	"use strict";
 	updateSelect();
 	selectChanged();
 }
