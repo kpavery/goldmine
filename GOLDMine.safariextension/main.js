@@ -41,7 +41,7 @@ for (var i = 0; i < classes.length; i++) {
 			
 			// Go through all the instructors, and get their string representation, trimmed.
 			for (var j = 0; j < currentinstructors.length; j++) {
-						currentinstructorsstr[j] = currentinstructors[j].textContent.trimLeft().trimRight();
+						currentinstructorsstr[j] = currentinstructors[j].textContent.trim();
 			}
 			
 			// Add the instructor array for this course, trimmed, to the main instructors array.
@@ -87,9 +87,9 @@ if (class_names.length > 0) {
 			//    are linked to a popup. Otherwise just get the content of the tag (for everything but the meeting locations). Add them to the new
 			//    element in class_times.
 			if (cells[j].getElementsByTagName("A").length != 0) {
-				class_times[i][j] = cells[j].getElementsByTagName("A")[0].textContent;
+				class_times[i][j] = cells[j].getElementsByTagName("A")[0].textContent.trim();
 			} else {
-				class_times[i][j] = cells[j].textContent;
+				class_times[i][j] = cells[j].textContent.trim();
 			}
 		}
 	}
@@ -121,7 +121,7 @@ if (class_names.length > 0) {
 		}
 		
 		// Create a new array with the department, number, name, an array of meeting times, and the instructors. Add that as a new element of the passed data.
-		var final_split = {'department': department,'number': number,'name': name,'meetingTimes': class_times[i],'instructor': instructors[i],'final': finals[i]};
+		var final_split = {'department': department.trim(),'number': number.trim(),'name': name.trim(),'meetingTimes': class_times[i],'instructor': instructors[i],'final': finals[i].trim()};
 		// Offset the index at one, because the first element is the quarter.
 		pass_data[i+1] = final_split;
 	}
