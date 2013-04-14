@@ -532,12 +532,6 @@ function manageLinks(event) {
 // Make sure the page calls the function to handle links.
 document.onclick=manageLinks;
 
-// Function to retrieve data from local storage and display it.
-function getStorage(event) {
-	"use strict";
-	initial();
-}
-
 // Quarter selection control changed, update the page.
 function selectChanged() {
 	"use strict";
@@ -555,7 +549,7 @@ function initial() {
 }
 
 // Tell Safari to attempt to get data from local storage and update the popover before displaying it.
-safari.application.addEventListener("popover",getStorage,false);
+safari.application.addEventListener("popover",initial,false);
 
 // The HTML below is the page structure, and the default text (that is displayed when no course data has been loaded).
 </script>
