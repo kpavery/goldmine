@@ -120,8 +120,14 @@ if (class_names.length > 0) {
 			}
 		}
 		
+		// Get final for this class, and if there is one, trim it.
+		var finalT = finals[i];
+		if (finalT) {
+			finalT = finalT.trim();
+		}
+		
 		// Create a new array with the department, number, name, an array of meeting times, and the instructors. Add that as a new element of the passed data.
-		var final_split = {'department': department.trim(),'number': number.trim(),'name': name.trim(),'meetingTimes': class_times[i],'instructor': instructors[i],'final': finals[i].trim()};
+		var final_split = {'department': department.trim(),'number': number.trim(),'name': name.trim(),'meetingTimes': class_times[i],'instructor': instructors[i],'final': finalT};
 		// Offset the index at one, because the first element is the quarter.
 		pass_data[i+1] = final_split;
 	}
