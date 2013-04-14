@@ -401,7 +401,7 @@ function update(mainarray) {
 
 		// Add a table row for each class, with its department (mainarray[i][0]), number (mainarray[i][1]), and name (mainarray[i][2]).
 		str += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i].department) + "' target='_blank'>" + mainarray[i].department + "</a>" + "</td><td class='cent'>" + mainarray[i].number + "</td>";
-		str += "<td colspan='2'>" + mainarray[i].name.toLowerCase().capitalize() + "</td></tr>";
+		str += "<td colspan='2'>" + mainarray[i].courseName.toLowerCase().capitalize() + "</td></tr>";
 		height += 30;
 
 		// Add the department and class to the final table content.
@@ -447,10 +447,10 @@ function update(mainarray) {
 		}
 
 		// Add the final time to the final table content.
-		finalStr += "<td colspan='2'>" + mainarray[i].final + "</td></tr>";
+		finalStr += "<td colspan='2'>" + mainarray[i].finalT + "</td></tr>";
 
 		// If the final is defined, we do have finals.
-		if (mainarray[i].final) {
+		if (mainarray[i].finalT) {
 			// Add this row to the height.
 			height += 27;
 			// Update our final boolean to show that we do have finals.
