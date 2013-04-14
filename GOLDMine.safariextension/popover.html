@@ -92,6 +92,10 @@ a:hover {
 	margin-bottom: 5px;
 }
 
+#quarterwhole {
+	visibility: hidden;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -307,6 +311,12 @@ function updateSelect() {
 		selected = 0;
 	}
 	select.selectedIndex = selected;
+	
+	if (select.options.length > 0) {
+		document.getElementById("quarterwhole").style.visibility = "visible";
+	} else {
+		document.getElementById("quarterwhole").style.visibility = "hidden";
+	}
 }
 
 // str is an HTML/string version of the class schedule (output to the user in this popover).
@@ -535,7 +545,7 @@ safari.application.addEventListener("popover",getStorage,false);
 </script>
 </head>
 <body>
-<div class="right">
+<div class="right" id="quarterwhole">
 Select quarter: <select id="quarter" onchange="selectChanged();">
 </select>
 </div>
