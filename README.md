@@ -11,6 +11,7 @@ Features
 
 GOLDMine's current features include:
 - Get course data from GOLD
+- Stores multiple quarters, once a quarter schedule is loaded it will be saved along with all the other quarters that are saved
 - Allow students to quickly look up professors on RateMyProfessors
 - Allow students to view each classroom on an interactive map of UCSB
 - Allow students to view the websites of departments they are taking classes in
