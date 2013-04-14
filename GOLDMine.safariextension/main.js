@@ -121,7 +121,7 @@ if (class_names.length > 0) {
 		}
 		
 		// Create a new array with the department, number, name, an array of meeting times, and the instructors. Add that as a new element of the passed data.
-		var final_split = {'department': department,'number': number,'name': name,'meetingTimes': class_times[i],'instructor': instructors[i],'final': finals[i]);
+		var final_split = {'department': department,'number': number,'name': name,'meetingTimes': class_times[i],'instructor': instructors[i],'final': finals[i]};
 		// Offset the index at one, because the first element is the quarter.
 		pass_data[i+1] = final_split;
 	}
