@@ -429,14 +429,14 @@ function update(mainarray) {
 				// Get the instructor's last name (for RateMyProfessor).
 				var lastname = instructor.split(" ",1)[0];
 				// Check if the last name is usable (it's not empty or one character, and it doesn't have a period).
-				if ((lastname.length > 1) && (lastname.indexOf(".") == -1)) {
+				if ((lastname.length > 1) && (lastname.indexOf(".") > -1)) {
 					// Add a link to RateMyProfessor, searching by the last name.
 					str += "<a href='" + "http://www.ratemyprofessors.com/search.jsp?query=" + lastname + "+University+California+Santa+Barbara'>";
 				}
 				// Output the instructor.
 				str += mainarray[i]['instructor'][j/3].toLowerCase().capitalize();
 				// If we started a link, finish it.
-				if ((lastname.length > 1) && (lastname.indexOf(".") != -1)) {
+				if ((lastname.length > 1) && (lastname.indexOf(".") > -1)) {
 					str += "</a>";
 				}
 			}
