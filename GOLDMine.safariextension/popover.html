@@ -118,21 +118,21 @@ for (var k = 0; k < bldgs.length; k++) {
 function getBldg(bldgAndRoom)
 {
 	var bldg = bldgAndRoom.split(" ");
-	if(bldg[0] == 494) return "College of Creative Studies";
-	if(bldg[0] == 479) return "Old Gymnasium";
-	if(bldg[0] == "ANCAP") return "Anacapa Hall";
-	if(bldg[0] == "BSIF") return "Biological Sciences Instructional Facility";
-	if(bldg[0] == "IVTHEA2") return "Isla Vista Theater";
-	if(bldg[0] == "MANZ") return "Loma Pelona";
-	if(bldg[0].indexOf("RECEN") > -1) return "Recreation Center";
-	if(bldg[0].indexOf("RGYM") > -1) return "Robertson Gymnasium";
-	if(bldg[0] == "SAN" && bldg[1] == "MIGEL") return "San Miguel Hall";
-	if(bldg[0] == "SAN" && bldg[1] == "NIC") return "San Nicolas Hall";
-	if(bldg[0] == "SAN" && bldg[1] == "RAFEL") return "San Rafael Hall";
-	if(bldg[0] == "SANTA" && bldg[1] == "CRUZ") return "Santa Cruz Hall";
-	if(bldg[0] == "SANTA" && bldg[1] == "ROSA") return "Santa Rosa Hall";
-	if(bldg[0] == "TD-E") return "Theater and Dance East";
-	if(bldg[0] == "ZODO") return "Zodo's Bowling & Beyond";
+	if(bldg[0] === "494") {return "College of Creative Studies";}
+	if(bldg[0] === "479") {return "Old Gymnasium";}
+	if(bldg[0] === "ANCAP") {return "Anacapa Hall";}
+	if(bldg[0] === "BSIF") {return "Biological Sciences Instructional Facility";}
+	if(bldg[0] === "IVTHEA2") {return "Isla Vista Theater";}
+	if(bldg[0] === "MANZ") {return "Loma Pelona";}
+	if(bldg[0].indexOf("RECEN") > -1) {return "Recreation Center";}
+	if(bldg[0].indexOf("RGYM") > -1) {return "Robertson Gymnasium";}
+	if(bldg[0] === "SAN" && bldg[1] === "MIGEL") {return "San Miguel Hall";}
+	if(bldg[0] === "SAN" && bldg[1] === "NIC") {return "San Nicolas Hall";}
+	if(bldg[0] === "SAN" && bldg[1] === "RAFEL") {return "San Rafael Hall";}
+	if(bldg[0] === "SANTA" && bldg[1] === "CRUZ") {return "Santa Cruz Hall";}
+	if(bldg[0] === "SANTA" && bldg[1] === "ROSA") {return "Santa Rosa Hall";}
+	if(bldg[0] === "TD-E") {return "Theater and Dance East";}
+	if(bldg[0] === "ZODO") {return "Zodo's Bowling & Beyond";}
 	return bldgAndRoom;
 }
 
@@ -151,87 +151,88 @@ function getBldgURL(bldgAndRoom)
 // Function to get the URL of an arbitrary university department.
 function getDeptURL(dept)
 {
-	if(dept=="ANTH") return "http://www.anth.ucsb.edu";
-	if(dept=="ART CS") return "http://www.ccs.ucsb.edu/art";
-	if(dept=="ARTHI") return "http://www.arthistory.ucsb.edu";
-	if(dept=="ARTST") return "http://www.arts.ucsb.edu";
-	if(dept=="AS AM") return "http://www.asamst.ucsb.edu";
-	if(dept=="ASTRO") return "http://web.physics.ucsb.edu/~astrogroup";
-	if(dept=="BIOL CS") return "http://www.ccs.ucsb.edu/biology";
-	if(dept=="BL ST") return "http://www.blackstudies.ucsb.edu";
-	if(dept=="BMSE") return "http://www.bmse.ucsb.edu";
-	if(dept=="C LIT") return "http://www.complit.ucsb.edu";
-	if(dept=="CH E") return "http://www.chemengr.ucsb.edu";
-	if(dept=="CH ST") return "http://www.chicst.ucsb.edu";
-	if(dept=="CHEM") return "http://www.chem.ucsb.edu";
-	if(dept=="CHEM CS") return "http://www.ccs.ucsb.edu/chem_biochem";
-	if(dept=="CHIN") return "http://www.eastasian.ucsb.edu";
-	if(dept=="CLASS") return "http://www.classics.ucsb.edu";
-	if(dept=="CMPSC") return "http://www.cs.ucsb.edu";
-	if(dept=="CMPSCCS") return "http://cs.ucsb.edu/~ccs";
-	if(dept=="CNCSP") return "http://education.ucsb.edu/Graduate-Studies/CCSP/CCSP-home.html";
-	if(dept=="COMM") return "http://www.comm.ucsb.edu";
-	if(dept=="DANCE") return "http://www.theaterdance.ucsb.edu";
-	if(dept=="EACS") return "http://www.eastasian.ucsb.edu";
-	if(dept=="EARTH") return "http://www.geol.ucsb.edu";
-	if(dept=="ECE") return "http://www.ece.ucsb.edu";
-	if(dept=="ECON") return "http://www.econ.ucsb.edu";
-	if(dept.indexOf("ED")==0) return "http://www.education.ucsb.edu";
-	if(dept=="EEMB") return "http://www.lifesci.ucsb.edu";
-	if(dept=="ENGL") return "http://www.english.ucsb.edu";
-	if(dept=="ENGR") return "http://engineering.ucsb.edu";
-	if(dept=="ENV S") return "http://www.es.ucsb.edu";
-	if(dept=="ES") return "http://essr.sa.ucsb.edu";
-	if(dept=="ESM") return "http://www.bren.ucsb.edu";
-	if(dept=="ESS") return "http://essr.sa.ucsb.edu";
-	if(dept=="FEMST") return "http://www.femst.ucsb.edu";
-	if(dept=="FLMST") return "http://www.filmandmedia.ucsb.edu";
-	if(dept=="FR") return "http://www.frit.ucsb.edu";
-	if(dept=="GEOG") return "http://www.geog.ucsb.edu";
-	if(dept=="GEOL") return "http://www.geol.ucsb.edu";
-	if(dept=="GER") return "http://www.gss.ucsb.edu";
-	if(dept=="GLOBL") return "http://www.global.ucsb.edu";
-	if(dept=="GPS") return "http://www.global.ucsb.edu/programs/gps";
-	if(dept=="GREEK") return "http://www.classics.ucsb.edu";
-	if(dept=="HEB") return "http://www.gss.ucsb.edu";
-	if(dept=="HIST") return "http://www.history.ucsb.edu";
-	if(dept=="INT") return "http://www.advising.ltsc.ucsb.edu/freshman";
-	if(dept=="ITAL") return "http://www.frit.ucsb.edu";
-	if(dept=="JAPAN") return "http://www.eastasian.ucsb.edu";
-	if(dept=="KOR") return "http://www.eastasian.ucsb.edu";
-	if(dept=="LAIS") return "http://www.lais.ucsb.edu";
-	if(dept=="LATIN") return "http://www.classics.ucsb.edu";
-	if(dept=="LING") return "http://www.linguistics.ucsb.edu";
-	if(dept=="LIT CS") return "http://www.ccs.ucsb.edu/literature";
-	if(dept=="MARSC") return "http://www.igpms.ucsb.edu";
-	if(dept=="MAT") return "http://www.mat.ucsb.edu";
-	if(dept=="MATH") return "http://www.math.ucsb.edu";
-	if(dept=="MATH CS") return "http://ccs.math.ucsb.edu";
-	if(dept=="MATH WKL") return "http://www.math.ucsb.edu";
-	if(dept=="MATRL") return "http://www.materials.ucsb.edu";
-	if(dept=="MCDB") return "http://www.lifesci.ucsb.edu";
-	if(dept=="ME") return "http://www.me.ucsb.edu";
-	if(dept=="ME ST") return "http://medievalstudies.ucsb.edu";
-	if(dept=="MES") return "http://www.cmes.ucsb.edu";
-	if(dept=="MS") return "http://www.milsci.ucsb.edu";
-	if(dept=="MUS") return "http://www.music.ucsb.edu";
-	if(dept=="MUS CS") return "http://www.ccs.ucsb.edu/music";
-	if(dept=="MUS A") return "http://www.music.ucsb.edu";
-	if(dept=="PHIL") return "http://www.philosophy.ucsb.edu";
-	if(dept=="PHYS") return "http://www.physics.ucsb.edu";
-	if(dept=="PHYS CS") return "http://www.ccs.ucsb.edu/physics";
-	if(dept=="POL S") return "http://www.polsci.ucsb.edu";
-	if(dept=="PORT") return "http://www.spanport.ucsb.edu";
-	if(dept=="PSTAT") return "http://www.pstat.ucsb.edu";
-	if(dept=="PSY") return "http://www.psych.ucsb.edu";
-	if(dept=="RENST") return "http://www.renaissancestudies.ucsb.edu";
-	if(dept=="RG ST") return "http://www.religion.ucsb.edu";
-	if(dept=="SHS") return "http://www.speech.ucsb.edu";
-	if(dept=="SLAV") return "http://www.gss.ucsb.edu";
-	if(dept=="SOC") return "http://www.soc.ucsb.edu";
-	if(dept=="SPAN") return "http://www.spanport.ucsb.edu";
-	if(dept=="THTR") return "http://www.theaterdance.ucsb.edu";
-	if(dept=="WRIT") return "http://www.writing.ucsb.edu";
+	if(dept==="ANTH") {return "http://www.anth.ucsb.edu";}
+	if(dept==="ART CS") {return "http://www.ccs.ucsb.edu/art";}
+	if(dept==="ARTHI") {return "http://www.arthistory.ucsb.edu";}
+	if(dept==="ARTST") {return "http://www.arts.ucsb.edu";}
+	if(dept==="AS AM") {return "http://www.asamst.ucsb.edu";}
+	if(dept==="ASTRO") {return "http://web.physics.ucsb.edu/~astrogroup";}
+	if(dept==="BIOL CS") {return "http://www.ccs.ucsb.edu/biology";}
+	if(dept==="BL ST") {return "http://www.blackstudies.ucsb.edu";}
+	if(dept==="BMSE") {return "http://www.bmse.ucsb.edu";}
+	if(dept==="C LIT") {return "http://www.complit.ucsb.edu";}
+	if(dept==="CH E") {return "http://www.chemengr.ucsb.edu";}
+	if(dept==="CH ST") {return "http://www.chicst.ucsb.edu";}
+	if(dept==="CHEM") {return "http://www.chem.ucsb.edu";}
+	if(dept==="CHEM CS") {return "http://www.ccs.ucsb.edu/chem_biochem";}
+	if(dept==="CHIN") {return "http://www.eastasian.ucsb.edu";}
+	if(dept==="CLASS") {return "http://www.classics.ucsb.edu";}
+	if(dept==="CMPSC") {return "http://www.cs.ucsb.edu";}
+	if(dept==="CMPSCCS") {return "http://cs.ucsb.edu/~ccs";}
+	if(dept==="CNCSP") {return "http://education.ucsb.edu/Graduate-Studies/CCSP/CCSP-home.html";}
+	if(dept==="COMM") {return "http://www.comm.ucsb.edu";}
+	if(dept==="DANCE") {return "http://www.theaterdance.ucsb.edu";}
+	if(dept==="EACS") {return "http://www.eastasian.ucsb.edu";}
+	if(dept==="EARTH") {return "http://www.geol.ucsb.edu";}
+	if(dept==="ECE") {return "http://www.ece.ucsb.edu";}
+	if(dept==="ECON") {return "http://www.econ.ucsb.edu";}
+	if(dept.indexOf("ED")>=0) {return "http://www.education.ucsb.edu";}
+	if(dept==="EEMB") {return "http://www.lifesci.ucsb.edu";}
+	if(dept==="ENGL") {return "http://www.english.ucsb.edu";}
+	if(dept==="ENGR") {return "http://engineering.ucsb.edu";}
+	if(dept==="ENV S") {return "http://www.es.ucsb.edu";}
+	if(dept==="ES") {return "http://essr.sa.ucsb.edu";}
+	if(dept==="ESM") {return "http://www.bren.ucsb.edu";}
+	if(dept==="ESS") {return "http://essr.sa.ucsb.edu";}
+	if(dept==="FEMST") {return "http://www.femst.ucsb.edu";}
+	if(dept==="FLMST") {return "http://www.filmandmedia.ucsb.edu";}
+	if(dept==="FR") {return "http://www.frit.ucsb.edu";}
+	if(dept==="GEOG") {return "http://www.geog.ucsb.edu";}
+	if(dept==="GEOL") {return "http://www.geol.ucsb.edu";}
+	if(dept==="GER") {return "http://www.gss.ucsb.edu";}
+	if(dept==="GLOBL") {return "http://www.global.ucsb.edu";}
+	if(dept==="GPS") {return "http://www.global.ucsb.edu/programs/gps";}
+	if(dept==="GREEK") {return "http://www.classics.ucsb.edu";}
+	if(dept==="HEB") {return "http://www.gss.ucsb.edu";}
+	if(dept==="HIST") {return "http://www.history.ucsb.edu";}
+	if(dept==="INT") {return "http://www.advising.ltsc.ucsb.edu/freshman";}
+	if(dept==="ITAL") {return "http://www.frit.ucsb.edu";}
+	if(dept==="JAPAN") {return "http://www.eastasian.ucsb.edu";}
+	if(dept==="KOR") {return "http://www.eastasian.ucsb.edu";}
+	if(dept==="LAIS") {return "http://www.lais.ucsb.edu";}
+	if(dept==="LATIN") {return "http://www.classics.ucsb.edu";}
+	if(dept==="LING") {return "http://www.linguistics.ucsb.edu";}
+	if(dept==="LIT CS") {return "http://www.ccs.ucsb.edu/literature";}
+	if(dept==="MARSC") {return "http://www.igpms.ucsb.edu";}
+	if(dept==="MAT") {return "http://www.mat.ucsb.edu";}
+	if(dept==="MATH") {return "http://www.math.ucsb.edu";}
+	if(dept==="MATH CS") {return "http://ccs.math.ucsb.edu";}
+	if(dept==="MATH WKL") {return "http://www.math.ucsb.edu";}
+	if(dept==="MATRL") {return "http://www.materials.ucsb.edu";}
+	if(dept==="MCDB") {return "http://www.lifesci.ucsb.edu";}
+	if(dept==="ME") {return "http://www.me.ucsb.edu";}
+	if(dept==="ME ST") {return "http://medievalstudies.ucsb.edu";}
+	if(dept==="MES") {return "http://www.cmes.ucsb.edu";}
+	if(dept==="MS") {return "http://www.milsci.ucsb.edu";}
+	if(dept==="MUS") {return "http://www.music.ucsb.edu";}
+	if(dept==="MUS CS") {return "http://www.ccs.ucsb.edu/music";}
+	if(dept==="MUS A") {return "http://www.music.ucsb.edu";}
+	if(dept==="PHIL") {return "http://www.philosophy.ucsb.edu";}
+	if(dept==="PHYS") {return "http://www.physics.ucsb.edu";}
+	if(dept==="PHYS CS") {return "http://www.ccs.ucsb.edu/physics";}
+	if(dept==="POL S") {return "http://www.polsci.ucsb.edu";}
+	if(dept==="PORT") {return "http://www.spanport.ucsb.edu";}
+	if(dept==="PSTAT") {return "http://www.pstat.ucsb.edu";}
+	if(dept==="PSY") {return "http://www.psych.ucsb.edu";}
+	if(dept==="RENST") {return "http://www.renaissancestudies.ucsb.edu";}
+	if(dept==="RG ST") {return "http://www.religion.ucsb.edu";}
+	if(dept==="SHS") {return "http://www.speech.ucsb.edu";}
+	if(dept==="SLAV") {return "http://www.gss.ucsb.edu";}
+	if(dept==="SOC") {return "http://www.soc.ucsb.edu";}
+	if(dept==="SPAN") {return "http://www.spanport.ucsb.edu";}
+	if(dept==="THTR") {return "http://www.theaterdance.ucsb.edu";}
+	if(dept==="WRIT") {return "http://www.writing.ucsb.edu";}
+	
 	return ("http://www.google.com/search?q=ucsb+" + dept +"+department");
 }
 
