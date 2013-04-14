@@ -141,10 +141,11 @@ function getBldgURL(bldgAndRoom)
 {
 	var bldg = bldgAndRoom.split(" ");
 	var returnURL;
-	if(abbrevs.indexOf(bldg[0])!=-1) 
+	if(abbrevs.indexOf(bldg[0]) > -1) { 
 		returnURL = "http://map.geog.ucsb.edu/?bldg=" + bldgs[bldg[0]].icmname + "&room=" + bldg[1];
-	else
+	} else {
 		returnURL = "http://maps.google.com/maps?q=" + encodeURIComponent(getBldg(bldgAndRoom)) + ",+Isla+Vista,+CA";
+	}
 	return returnURL;
 }
 
@@ -251,26 +252,26 @@ function compareQuarters(quarter1, quarter2) {
 	var name2 = split2[0];
 	
 	// If the years are different, that is sufficient for determining which quarter is first.
-	if (year1 != year2) {
+	if (year1 !== year2) {
 		return year2 - year1;
 	} else {
 		// Otherwise, compare for each quarter.
-		if (name1 == "Fall") {
+		if (name1 === "Fall") {
 			// Fall is the last quarter always.
 			return -1;
-		} else if (name1 == "Winter") {
+		} else if (name1 === "Winter") {
 			// Winter is always the first quarter.
 			return 1;
-		} else if (name1 == "Spring") {
+		} else if (name1 === "Spring") {
 			// Spring is after winter, but before all the others.
-			if (name2 == "Winter") {
+			if (name2 === "Winter") {
 				return -1;
 			} else {
 				return 1;
 			}
-		} else if (name1 == "Summer") {
+		} else if (name1 === "Summer") {
 			// Summer is before fall, but after all the others.
-			if (name2 == "Fall") {
+			if (name2 === "Fall") {
 				return 1;
 			} else {
 				return -1;
