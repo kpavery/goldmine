@@ -85,6 +85,13 @@ a:hover {
 	font-size: .80em;
 }
 
+.right {
+	text-align: center;
+	vertical-align: middle;
+	font-size: 12px;
+	margin-bottom: 5px;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -348,7 +355,7 @@ function respondToMessage(theMessageEvent) {
 // This function updates the popover given an array of data.
 function update(mainarray) {
 	// Initial height is 18, which is the height of the select element.
-	var height = 18;
+	var height = 23;
 	// Initially, we have no final information.
 	haveFinals = false;
 
@@ -534,8 +541,10 @@ safari.application.addEventListener("popover",getStorage,false);
 </script>
 </head>
 <body>
-<select id="quarter" onchange="selectChanged();">
+<div class="right">
+Select quarter: <select id="quarter" onchange="selectChanged();">
 </select>
+</div>
 <table id="main" cellspacing="0">
 <tr><td class='cent'>Please go to your course schedule page in GOLD (or reload it if you are already there).</td></tr>
 </table>
