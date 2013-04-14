@@ -261,18 +261,24 @@ function respondToMessage(theMessageEvent) {
 	    // Get the message's data and store it.
 	    var mainarray = theMessageEvent.message;
 	    
+	    // Get the local data, consisting of multiple quarters.
 	    var local = JSON.parse(localStorage.getItem("mainarray"));
-	    
+	  	
+	  	// Get the quarter we got data for.  
 	    var quarter = mainarray[0];
-	    	    
+	    
+	    // If we didn't find local data, or the local data is not an assoc. array, make a new one.	    
 	    if (!local || !(local === Object(local))) {
 		   	local = new Object();
 	   	}
 	   	
+	   	// Set the quarter that we got data for.
 	   	local[quarter] = mainarray.slice(1);
 	   	
+	   	// Save back to the local data storage.
 	    localStorage.setItem("mainarray", JSON.stringify(local));
 	    
+	    // Update the quarter select control.
 	    updateSelect();
 
 	    // Update the popover with that data.
@@ -293,9 +299,11 @@ function update(mainarray) {
 	// finals is the element (a table) that we will insert final exam information into.
 	var finals = document.getElementById("finals");
 	
+	// Get the quarter selection control and find the selected quarter.
 	var select = document.getElementById("quarter");
 	var quarter = select.options[select.selectedIndex].text;
 
+	// Get the data for the quarter.
 	mainarray = mainarray[quarter];
 
 	// Start the string, and include the quarter that the popover is listing. The quarter is stored in the first element of the data passed.
@@ -446,6 +454,7 @@ function getStorage(event) {
 	initial();
 }
 
+// Quarter selection control changed, update the page.
 function selectChanged() {
 	var mainarray = JSON.parse(localStorage.getItem("mainarray"));
 	if (mainarray) {
@@ -453,6 +462,7 @@ function selectChanged() {
 	}
 }
 
+// Function that updates the select control and updates the page, called before the page is shown.
 function initial() {
 	updateSelect();
 	selectChanged();
