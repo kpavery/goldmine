@@ -1,15 +1,15 @@
 // Initialization.
 
 // class_names is the unparsed text pulled in from GOLD about each class (including its dept., num., and name).
-var class_names = new Array();
+var class_names = [];
 // meeting_times is the unparsed text about all meeting times.
-var meeting_times = new Array();
+var meeting_times = [];
 // class_times is the parsed values for the meeting times of the all the classes. It is an array of arrays, with a top-level element for each class.
-var class_times = new Array();
+var class_times = [];
 // instructors is an array for the professors of each class.
-var instructors = new Array();
+var instructors = [];
 // finals is an array for the final exam times of each class.
-var finals = new Array();
+var finals = [];
 // Counter.
 var count = 0;
 
@@ -34,7 +34,7 @@ for (var i = 0; i < classes.length; i++) {
 		if (instructor) {
 			// If we did, get all the instructors from the table. The elements they're in may be clcellprimary or clcellprimaryalt, so handle both.
 			var currentinstructors = instructor.getElementsByClassName("clcellprimary");
-			var currentinstructorsstr = new Array();
+			var currentinstructorsstr = [];
 			if (currentinstructors.length == 0){
 				currentinstructors = instructor.getElementsByClassName("clcellprimaryalt");
 			}
@@ -79,7 +79,7 @@ if (class_names.length > 0) {
 		}
 		
 		// Make a new array element in class_times. This array contains all the meeting times for one class.
-		class_times[i] = new Array()
+		class_times[i] = [];
 		
 		// Loop through all the cells that were found in the current meeting_times tag hierarchy. 
 		for (var j=0; j < cells.length; j++) {
@@ -95,7 +95,7 @@ if (class_names.length > 0) {
 	}
 	
 	// Initialize the message data, that will be passed to the popover.
-	var pass_data = new Array();
+	var pass_data = [];
 	
 	// Set the first element of the pass data to the name of the quarter we're analyzing. It's the text of the selected option of the page's select tag.
 	pass_data[0] = document.getElementsByTagName("SELECT")[0].options[document.getElementsByTagName("SELECT")[0].selectedIndex].textContent.trimLeft().trimRight();
