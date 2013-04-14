@@ -408,7 +408,7 @@ function update(mainarray) {
 		finalStr += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i].department) + "' target='_blank'>" + mainarray[i].department + "</a>" + "</td><td class='cent'>" + mainarray[i].number + "</td>";
 
 		// Loop through the array of meeting times for the class (mainarray[i][3]). We increment j by 3 each time, because we've stored 3 elements in the array for each meeting time.
-		for (var j = 0; j < mainarray[i]['meetingTimes'].length; j += 3) {
+		for (var j = 0; j < mainarray[i].meetingTimes.length; j += 3) {
 			// Use the same color as the class main row.
 			if (i % 2 === 1) {
 				str += "<tr class='alt small'>";
@@ -423,7 +423,7 @@ function update(mainarray) {
 			// Add the last table cell for each row.
 			str += "<td>";
 			// Check if there is an instructor for this row.
-			if (j/3 < mainarray[i]['instructor'].length) {
+			if (j/3 < mainarray[i].instructor.length) {
 				// Get the instructor.
 				var instructor = mainarray[i].instructor[j/3].toLowerCase().capitalize();
 				// Get the instructor's last name (for RateMyProfessor).
@@ -434,7 +434,7 @@ function update(mainarray) {
 					str += "<a href='" + "http://www.ratemyprofessors.com/search.jsp?query=" + lastname + "+University+California+Santa+Barbara'>";
 				}
 				// Output the instructor.
-				str += mainarray[i]['instructor'][j/3].toLowerCase().capitalize();
+				str += mainarray[i].instructor[j/3].toLowerCase().capitalize();
 				// If we started a link, finish it.
 				if ((lastname.length > 1) && (lastname.indexOf(".") > -1)) {
 					str += "</a>";
