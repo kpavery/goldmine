@@ -111,7 +111,7 @@ var bldgs = [{abbr:"ARTS", icmname:"Arts and University Art Museum"}, {abbr:"BIO
 var abbrevs = ["ARTS", "BIOL2", "BREN", "BRDA", "BUCHN", "CAMPBHALL", "CHEM", "LIB", "ELLSN", "EMBARHALL", "ENGR2", "ESB", "EVENTCENTR", "WEBB", "GIRV", "HFH", "HSSB", "IVTHEA", "KERR", "KOHN", "LSB", "MLAB", "MRL", "MUSIC", "MUSICLLCH", "NOBLE", "NH", "PHELP", "PSB-N", "PSB-S", "PSYCH", "RECEN", "RGYM", "SH", "SAASB", "STU HLTH", "STUHLTH", "SRB", "TD-W"];
 
 for (var k = 0; k < bldgs.length; k++) {
-    bldgs[bldgs[k].abbr] = bldgs[k];
+	bldgs[bldgs[k].abbr] = bldgs[k];
 }
 
 // Function for buildings that aren't supported by the geology department map.
@@ -330,33 +330,33 @@ var haveFinals;
 // This function responds to messages sent from other places in the browser runtime.
 function respondToMessage(theMessageEvent) {
 	// We are only interested in "classData" messages, and we want to ignore the rest.
-    if(theMessageEvent.name === "classData") {
-	    // Get the message's data and store it.
-	    var mainarray = theMessageEvent.message;
-	    
-	    // Get the local data, consisting of multiple quarters.
-	    var local = JSON.parse(localStorage.getItem("mainarray"));
-	  	
-	  	// Get the quarter we got data for.  
-	    var quarter = mainarray[0];
-	    
-	    // If we didn't find local data, or the local data is not an assoc. array, make a new one.	    
-	    if (!local || !(local.constructor === Object)) {
-		   	local = new Object();
-	   	}
-	   	
-	   	// Set the quarter that we got data for.
-	   	local[quarter] = mainarray.slice(1);
-	   	
-	   	// Save back to the local data storage.
-	    localStorage.setItem("mainarray", JSON.stringify(local));
-	    
-	    // Update the quarter select control.
-	    updateSelect();
-
-	    // Update the popover with that data.
-	    update(local);
-    }
+	if(theMessageEvent.name === "classData") {
+		// Get the message's data and store it.
+		var mainarray = theMessageEvent.message;
+		
+		// Get the local data, consisting of multiple quarters.
+		var local = JSON.parse(localStorage.getItem("mainarray"));
+		
+		// Get the quarter we got data for.
+		var quarter = mainarray[0];
+		
+		// If we didn't find local data, or the local data is not an assoc. array, make a new one.
+		if (!local || !(local.constructor === Object)) {
+			local = new Object();
+		}
+		
+		// Set the quarter that we got data for.
+		local[quarter] = mainarray.slice(1);
+		
+		// Save back to the local data storage.
+		localStorage.setItem("mainarray", JSON.stringify(local));
+		
+		// Update the quarter select control.
+		updateSelect();
+		
+		// Update the popover with that data.
+		update(local);
+	}
 }
 
 // This function updates the popover given an array of data.
@@ -415,7 +415,7 @@ function update(mainarray) {
 			}
 
 			// Add a table row for each meeting time, with its day, time, and room number. We use j as the offset of the first value for this meeting time
-			//    and add another offset to that (ranging 0-2) to get to the data we need. Every third value is the day value of another class meeting time.
+			//	and add another offset to that (ranging 0-2) to get to the data we need. Every third value is the day value of another class meeting time.
 			str += "<td class='right'>" + mainarray[i]['meetingTimes'][j+0] + "</td><td class='cent'>" + mainarray[i]['meetingTimes'][j+1] + "</td>";
 			str += "<td>" + "<a href=\"" + getBldgURL(mainarray[i]['meetingTimes'][j+2]) +"\" target='_blank'>" + mainarray[i]['meetingTimes'][j+2] + "</a>" + "</td>";
 			// Add the last table cell for each row.
