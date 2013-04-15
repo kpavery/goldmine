@@ -96,6 +96,16 @@ a:hover {
 	visibility: hidden;
 }
 
+#helpfooter {
+	text-align: center;
+	margin-top: 5px;
+	font-size: 0.75em;
+}
+
+#helpfooter a {
+	color: #666;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -373,8 +383,8 @@ function respondToMessage(theMessageEvent) {
 // This function updates the popover given an array of data.
 function update(mainarray) {
 	"use strict";
-	// Initial height is 18, which is the height of the select element.
-	var height = 23;
+	// Initial height is 43, which is the height of the select element and the help link.
+	var height = 43;
 	// Initially, we have no final information.
 	haveFinals = false;
 
@@ -567,5 +577,6 @@ Select quarter: <select id="quarter" onchange="selectChanged();">
 <table id="finals" cellspacing="0">
 <tr><td class='cent'></td></tr>
 </table>
+<div id="helpfooter"><a href="http://kpavery.github.io/goldmine/#help">Help</a></div>
 </body>
 </html>
