@@ -75,6 +75,8 @@
 			<string>Some</string>
 		</dict>
 	</dict>
+	<key>Update Manifest URL</key>
+	<string>http://kpavery.github.io/goldmine/update.plist</string>
 	<key>Website</key>
 	<string>http://kpavery.github.io/goldmine</string>
 </dict>
