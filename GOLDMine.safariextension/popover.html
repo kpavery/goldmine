@@ -579,7 +579,7 @@ function parseTimesForQuarter(quarter) {
 	if (mainarray) {
 		var timeList = [];
 		for (var i = 0; i < mainarray.length; i++) {
-			var className = mainarray[i].department + " " + mainarray[i].number.replace(/\s/g,'');
+			var courseName = mainarray[i].department + " " + mainarray[i].number.replace(/\s/g,'');
 			var meetingTimes = mainarray[i].meetingTimes;
 			for (var j = 0; j < meetingTimes.length; j++) {
 				var room = meetingTimes[j].room;
@@ -591,7 +591,7 @@ function parseTimesForQuarter(quarter) {
 				
 				var days = getDays(meetingTimes[j].day);
 				for (var k = 0; k < days.length; k++) {
-					var meeting = {'className': className, 'day': days[k], 'startTime': startTime, 'endTime': endTime, 'room': room};
+					var meeting = {'courseName': courseName, 'day': days[k], 'startTime': startTime, 'endTime': endTime, 'room': room};
 					timeList.push(meeting);
 				}
 			}
