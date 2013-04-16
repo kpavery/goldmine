@@ -549,6 +549,7 @@ function selectChanged() {
 	if (mainarray) {
 		update(mainarray);
 	}
+	parseTimes();
 }
 
 // Function that updates the select control and updates the page, called before the page is shown.
@@ -556,6 +557,57 @@ function initial() {
 	"use strict";
 	updateSelect();
 	selectChanged();
+}
+
+function getDays(daysString) {
+	var dayLookup = {"M": "Monday", "T": "Tuesday", "W": "Wednesday", "R": "Thursday", "F": "Friday", "S": "Saturday", "U": "Sunday"};
+	var dayStrings = daysString.split(" ");
+	var days = [];
+	for (var i = 0; i < dayStrings.length; i++) {
+		days.push(dayLookup[dayStrings[i]]);
+	}
+	return days;
+}
+
+function getInterval(timeString) {
+	var split = timeString.replace(/[^APM0-9:\-]/g, '').split("-");
+	return [split[0], split[1]];
+}
+
+function parseTimesForQuarter(quarter) {
+	var mainarray = JSON.parse(localStorage.getItem("mainarray"))[quarter];
+	if (mainarray) {
+		var timeList = [];
+		for (var i = 0; i < mainarray.length; i++) {
+			var className = mainarray[i].department + " " + mainarray[i].number.replace(/\s/g,'');
+			var meetingTimes = mainarray[i].meetingTimes;
+			for (var j = 0; j < meetingTimes.length; j++) {
+				var room = meetingTimes[j].room;
+				
+				var classTime = meetingTimes[j].meetingTime;
+				var interval = getInterval(classTime);
+				var startTime = interval[0];
+				var endTime = interval[1];
+				
+				var days = getDays(meetingTimes[j].day);
+				for (var k = 0; k < days.length; k++) {
+					var meeting = {'className': className, 'day': days[k], 'startTime': startTime, 'endTime': endTime, 'room': room};
+					timeList.push(meeting);
+				}
+			}
+		}
+		alert (JSON.stringify(timeList));
+	}
+}
+
+function parseTimes() {
+	try {
+		var select = document.getElementById("quarter");
+		var quarter = select.options[select.selectedIndex].text;
+		parseTimesForQuarter(quarter);
+	} catch (error) {
+		alert("Exception: " + error);
+	}
 }
 
 // Tell Safari to attempt to get data from local storage and update the popover before displaying it.
