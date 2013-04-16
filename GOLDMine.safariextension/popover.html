@@ -428,7 +428,7 @@ function update(mainarray) {
 		finalStr += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i].department) + "' target='_blank'>" + mainarray[i].department + "</a>" + "</td><td class='cent'>" + mainarray[i].number + "</td>";
 
 		// Loop through the array of meeting times for the class (mainarray[i][3]). We increment j by 3 each time, because we've stored 3 elements in the array for each meeting time.
-		for (var j = 0; j < mainarray[i].meetingTimes.length; j += 3) {
+		for (var j = 0; j < mainarray[i].meetingTimes.length; j++) {
 			// Use the same color as the class main row.
 			if (i % 2 === 1) {
 				str += "<tr class='alt small'>";
@@ -438,23 +438,23 @@ function update(mainarray) {
 
 			// Add a table row for each meeting time, with its day, time, and room number. We use j as the offset of the first value for this meeting time
 			//	and add another offset to that (ranging 0-2) to get to the data we need. Every third value is the day value of another class meeting time.
-			str += "<td class='right'>" + mainarray[i].meetingTimes[j+0] + "</td><td class='cent'>" + mainarray[i].meetingTimes[j+1] + "</td>";
-			str += "<td>" + "<a href=\"" + getBldgURL(mainarray[i].meetingTimes[j+2]) +"\" target='_blank'>" + mainarray[i].meetingTimes[j+2] + "</a>" + "</td>";
+			str += "<td class='right'>" + mainarray[i].meetingTimes[j].day + "</td><td class='cent'>" + mainarray[i].meetingTimes[j].meetingTime + "</td>";
+			str += "<td>" + "<a href=\"" + getBldgURL(mainarray[i].meetingTimes[j].room) +"\" target='_blank'>" + mainarray[i].meetingTimes[j].room + "</a>" + "</td>";
 			// Add the last table cell for each row.
 			str += "<td>";
 			// Check if there is an instructor for this row.
-			if (j/3 < mainarray[i].instructor.length) {
+			if (j < mainarray[i].instructor.length) {
 				// Get the instructor.
-				var instructor = mainarray[i].instructor[j/3].toLowerCase().capitalize();
+				var instructor = mainarray[i].instructor[j].toLowerCase().capitalize();
 				// Get the instructor's last name (for RateMyProfessor).
 				var lastname = instructor.split(" ",1)[0];
 				// Check if the last name is usable (it's not empty or one character, and it doesn't have a period).
-				if ((lastname.length > 1) && (lastname.indexOf(".") > -1)) {
+				if ((lastname.length > 1) && (lastname.indexOf(".") < 0)) {
 					// Add a link to RateMyProfessor, searching by the last name.
 					str += "<a href='" + "http://www.ratemyprofessors.com/search.jsp?query=" + lastname + "+University+California+Santa+Barbara'>";
 				}
 				// Output the instructor.
-				str += mainarray[i].instructor[j/3].toLowerCase().capitalize();
+				str += mainarray[i].instructor[j].toLowerCase().capitalize();
 				// If we started a link, finish it.
 				if ((lastname.length > 1) && (lastname.indexOf(".") > -1)) {
 					str += "</a>";
@@ -546,6 +546,7 @@ document.onclick=manageLinks;
 function selectChanged() {
 	"use strict";
 	var mainarray = JSON.parse(localStorage.getItem("mainarray"));
+	alert(localStorage.getItem("mainarray"));
 	if (mainarray) {
 		update(mainarray);
 	}

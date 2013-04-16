@@ -81,16 +81,10 @@ if (class_names.length > 0) {
 		// Make a new array element in class_times. This array contains all the meeting times for one class.
 		class_times[i] = [];
 		
-		// Loop through all the cells that were found in the current meeting_times tag hierarchy. 
-		for (var j=0; j < cells.length; j++) {
-			// Check for a link (<a> tag) in the cell. If there is one, just get the content of that link. This is for the meeting locations, which
-			//	are linked to a popup. Otherwise just get the content of the tag (for everything but the meeting locations). Add them to the new
-			//	element in class_times.
-			if (cells[j].getElementsByTagName("A").length > 0) {
-				class_times[i][j] = cells[j].getElementsByTagName("A")[0].textContent.trim();
-			} else {
-				class_times[i][j] = cells[j].textContent.trim();
-			}
+		// Loop through all the cells that were found in the current meeting_times tag hierarchy, divided by three (since there are three elements for each time). 
+		for (var j=0; j < cells.length / 3; j++) {
+			// Create object with day, time, and room information for the meeting time, and set it in the meeting times list.
+			class_times[i][j] = {'day': cells[j*3].textContent.trim(), 'meetingTime': cells[j*3+1].textContent.trim(), 'room': cells[j*3+2].getElementsByTagName("A")[0].textContent.trim()};
 		}
 	}
 	
