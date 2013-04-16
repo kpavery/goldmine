@@ -596,18 +596,13 @@ function parseTimesForQuarter(quarter) {
 				}
 			}
 		}
-		alert (JSON.stringify(timeList));
 	}
 }
 
 function parseTimes() {
-	try {
 		var select = document.getElementById("quarter");
 		var quarter = select.options[select.selectedIndex].text;
 		parseTimesForQuarter(quarter);
-	} catch (error) {
-		alert("Exception: " + error);
-	}
 }
 
 // Tell Safari to attempt to get data from local storage and update the popover before displaying it.
