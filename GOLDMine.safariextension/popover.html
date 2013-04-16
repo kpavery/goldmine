@@ -574,6 +574,30 @@ function getInterval(timeString) {
 	return [split[0], split[1]];
 }
 
+function makeICalendar(timeList) {
+	var icalString =
+	'BEGIN:VCALENDAR\n' +
+	'VERSION:2.0\n' +
+	'PRODID:com.kpavery.GOLDMine\n' +
+	'METHOD:PUBLISH\n';
+	for (var i = 0; i < timeList.length; i++) {
+		var time = timeList[i];
+
+		icalString +=
+		'BEGIN:VEVENT\n' +
+		'UID:' + ((new Date().getTime()) + i) + '@' + 'GOLDMine' + '\n' +
+		'DTSTAMP:' + new Date() + '\n' +
+		'TITLE:' + time.courseName + '\n' +
+		'DTSTART:' + time.startTime + '\n' +
+		'DTEND:' + time.endTime + '\n' +
+		'LOCATION:' + time.room + '\n' +
+		'END:VEVENT\n';
+	}
+
+	icalString += 'END:VCALENDAR';
+	return icalString;
+}
+
 function parseTimesForQuarter(quarter) {
 	var mainarray = JSON.parse(localStorage.getItem("mainarray"))[quarter];
 	if (mainarray) {
@@ -596,13 +620,19 @@ function parseTimesForQuarter(quarter) {
 				}
 			}
 		}
+		var ical = makeICalendar(timeList);
+		alert(ical);
 	}
 }
 
 function parseTimes() {
+	try {
 		var select = document.getElementById("quarter");
 		var quarter = select.options[select.selectedIndex].text;
 		parseTimesForQuarter(quarter);
+	} catch (error) {
+		alert("Exception: " + error);
+	}
 }
 
 // Tell Safari to attempt to get data from local storage and update the popover before displaying it.
