@@ -666,6 +666,8 @@ function parseTimesForQuarter(quarter) {
 			}
 		}
 		var ical = makeICalendar(timeList);
+		var download = document.getElementById("download");
+		download.href = "data:text/calendar;charset=US-ASCII," + ical;
 		alert(ical);
 	}
 }
@@ -699,6 +701,7 @@ Select quarter: <select id="quarter" onchange="selectChanged();">
 <table id="finals" cellspacing="0">
 <tr><td class='cent'></td></tr>
 </table>
+<a download="Courses.ics" href="" id="download">Download</a>
 <div id="helpfooter"><a href="http://kpavery.github.io/goldmine/#help">Help</a></div>
 </body>
 </html>
