@@ -574,6 +574,44 @@ function getInterval(timeString) {
 	return [split[0], split[1]];
 }
 
+function makeRelativeDate(stringTime, day) {
+	var dayLookup = {"Monday": 1, "Tuesday" : 2, "Wednesday": 3, "Thursday": 4, "Friday" : 5, "Saturday": 6, "Sunday": 0};
+	var currentDate = new Date();
+	var seconds = currentDate.getTime();
+	var currentDay = currentDate.getDay();
+	seconds += 24 * 60 * 60 * (dayLookup[day] - currentDay) * 1000;
+	var relative = new Date(seconds);
+	var split = stringTime.split(":");
+	var hour = parseInt(split[0]);
+	var minute = parseInt(split[1].substr(0,2));
+	if (split[1].substr(2, 2) == "PM") {
+		if (hour != 12)
+			hour += 12;
+	} else if (hour == 12) {
+		hour -= 12;
+	}
+	
+	relative.setHours(hour);
+	relative.setMinutes(minute);
+	relative.setSeconds(0);
+	relative.setMilliseconds(0);
+	
+	return relative;
+}
+
+function makeTwoDigit(num) {
+	if (num < 10)
+		return "0" + num;
+	else
+		return "" + num;
+}
+
+function makeICalDate(date) {
+	var string = "" + date.getFullYear() + makeTwoDigit(date.getMonth() + 1) + makeTwoDigit(date.getDate());
+	string += "T" + makeTwoDigit(date.getHours()) + makeTwoDigit(date.getMinutes()) + makeTwoDigit(date.getSeconds());
+	return string;
+}
+
 function makeICalendar(timeList) {
 	var icalString =
 	'BEGIN:VCALENDAR\n' +
@@ -586,12 +624,21 @@ function makeICalendar(timeList) {
 		icalString +=
 		'BEGIN:VEVENT\n' +
 		'UID:' + ((new Date().getTime()) + i) + '@' + 'GOLDMine' + '\n' +
-		'DTSTAMP:' + new Date() + '\n' +
-		'TITLE:' + time.courseName + '\n' +
-		'DTSTART:' + time.startTime + '\n' +
-		'DTEND:' + time.endTime + '\n' +
+		'DTSTAMP:' + makeICalDate(new Date()) + '\n' +
+		'SUMMARY:' + time.courseName + '\n' +
+		'DTSTART:' + makeICalDate(makeRelativeDate(time.startTime, time.days[0])) + '\n' +
+		'RRULE:FREQ=WEEKLY;COUNT=10;INTERVAL=1;BYDAY=';
+		for (var j = 0; j < time.days.length; j++) {
+			icalString += time.days[j].substr(0,2).toUpperCase();
+			if (j != time.days.length - 1)
+				icalString += ","
+		}
+		icalString += ';WKST=SU' + '\n' +
+		'DTEND:' + makeICalDate(makeRelativeDate(time.endTime, time.days[0])) + '\n' +
 		'LOCATION:' + time.room + '\n' +
 		'END:VEVENT\n';
+		
+		// alert(time.courseName + ": " + makeRelativeDate(time.startTime, time.day).toString() + " (" + time.startTime + ") to " + makeRelativeDate(time.endTime, time.day).toString() + " (" + time.endTime + ") - day: " + time.day);
 	}
 
 	icalString += 'END:VCALENDAR';
@@ -614,10 +661,10 @@ function parseTimesForQuarter(quarter) {
 				var endTime = interval[1];
 				
 				var days = getDays(meetingTimes[j].day);
-				for (var k = 0; k < days.length; k++) {
-					var meeting = {'courseName': courseName, 'day': days[k], 'startTime': startTime, 'endTime': endTime, 'room': room};
+				// for (var k = 0; k < days.length; k++) {
+					var meeting = {'courseName': courseName, 'days': days, 'startTime': startTime, 'endTime': endTime, 'room': room};
 					timeList.push(meeting);
-				}
+				// }
 			}
 		}
 		var ical = makeICalendar(timeList);
