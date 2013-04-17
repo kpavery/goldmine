@@ -661,10 +661,8 @@ function parseTimesForQuarter(quarter) {
 				var endTime = interval[1];
 				
 				var days = getDays(meetingTimes[j].day);
-				// for (var k = 0; k < days.length; k++) {
-					var meeting = {'courseName': courseName, 'days': days, 'startTime': startTime, 'endTime': endTime, 'room': room};
-					timeList.push(meeting);
-				// }
+				var meeting = {'courseName': courseName, 'days': days, 'startTime': startTime, 'endTime': endTime, 'room': room};
+				timeList.push(meeting);
 			}
 		}
 		var ical = makeICalendar(timeList);
