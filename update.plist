@@ -6,7 +6,7 @@
 	<array>
 		<dict>
 			<key>CFBundleIdentifier</key>
-			<string>com.kpavery.safari.GOLDMine</string>
+			<string>com.kpavery.goldmine</string>
 			<key>Developer Identifier</key>
 			<string>35P6Q4THN7</string>
 			<key>CFBundleVersion</key>
