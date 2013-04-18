@@ -703,13 +703,13 @@ function makeICalendar(timeList, finalStrings) {
 	for (var i = 0; i < timeList.length; i++) {
 		var time = timeList[i];
 		
-		if (time.days.length < 1 || !time.days[0]) {
-			continue;
-		}
-		
 		if (courseNames.indexOf(time.courseName) < 0) {
 			courseNames.push(time.courseName);
 			courseLocations.push(time.room);
+		}
+		
+		if (time.days.length < 1 || !time.days[0]) {
+			continue;
 		}
 		
 		var section = "";
