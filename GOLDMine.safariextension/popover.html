@@ -488,7 +488,7 @@ function update(mainarray) {
 			// Update our final boolean to show that we do have finals.
 			haveFinals = true;
 			
-			if (mainarray[i].finalT.search(/[a-zA-Z]+, [a-zA-Z]+ [0-9]{1,2}, [0-9]{4}/g) > 0) {
+			if (/[a-zA-Z]+, [a-zA-Z]+ [0-9]{1,2}, [0-9]{4}/.test(mainarray[i].finalT)) {
 				finalList[i] = mainarray[i].finalT;
 			} else {
 				finalList[i] = "";
