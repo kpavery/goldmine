@@ -685,18 +685,13 @@ function parseTimesForQuarter(quarter) {
 		var ical = makeICalendar(timeList);
 		var download = document.getElementById("download");
 		download.href = "http://kpavery.com/goldmine.php?data=" + encodeURIComponent(encodeURI(ical));
-		alert(ical);
 	}
 }
 
 function parseTimes() {
-	try {
-		var select = document.getElementById("quarter");
-		var quarter = select.options[select.selectedIndex].text;
-		parseTimesForQuarter(quarter);
-	} catch (error) {
-		alert("Exception: " + error);
-	}
+	var select = document.getElementById("quarter");
+	var quarter = select.options[select.selectedIndex].text;
+	parseTimesForQuarter(quarter);
 }
 
 // Tell Safari to attempt to get data from local storage and update the popover before displaying it.
