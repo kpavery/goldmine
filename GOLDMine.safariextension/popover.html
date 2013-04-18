@@ -77,7 +77,7 @@ a:hover {
 }
 
 #finals {
-	visibility:hidden;
+	display: none;
 	margin-top: 5px;
 }
 
@@ -108,8 +108,9 @@ a:hover {
 
 #downloadfooter {
 	text-align: center;
-	font-size: 0.75em;
-	visibility: hidden;
+	font-size: 0.80em;
+	display: none;
+	margin: 2px auto 5px auto;
 }
 
 #downloadfooter a {
@@ -393,8 +394,8 @@ function respondToMessage(theMessageEvent) {
 // This function updates the popover given an array of data.
 function update(mainarray) {
 	"use strict";
-	// Initial height is 43, which is the height of the select element and the help link.
-	var height = 43;
+	// Initial height is 59, which is the height of the select element, the download link, and the help link.
+	var height = 59;
 	// Initially, we have no final information.
 	haveFinals = false;
 
@@ -496,21 +497,21 @@ function update(mainarray) {
 		// Add the finals header to the height.
 		height += 27;
 		// Show the finals table.
-		finals.style.visibility = "visible";
+		finals.style.display = "table";
 		// Set the finals content to the string.
 		finals.innerHTML = finalStr;
 		
 		parseTimes();
 		
 		var download = document.getElementById("downloadfooter");
-		download.style.visibility = "visible";
+		download.style.display = "block";
 	} else {
 		// Hide the final table and reset its content.
-		finals.style.visibility="hidden";
+		finals.style.display="none";
 		finals.innerHTML = "";
 		
 		var download = document.getElementById("downloadfooter");
-		download.style.visibility = "hidden";
+		download.style.display = "none";
 	}
 
 	// Set the popover height to the computed height.
@@ -707,13 +708,13 @@ Select quarter: <select id="quarter" onchange="selectChanged();">
 <option></option>
 </select>
 </div>
+<div id="downloadfooter"><a href="" id="download">Download Schedule</a></div>
 <table id="main" cellspacing="0">
 <tr><td class='cent'>Please go to your course schedule page in GOLD (or reload it if you are already there).</td></tr>
 </table>
 <table id="finals" cellspacing="0">
 <tr><td class='cent'></td></tr>
 </table>
-<div id="downloadfooter"><a href="" id="download">Download (ics file)</a></div>
 <div id="helpfooter"><a href="http://kpavery.github.io/goldmine/#help">Help</a></div>
 </body>
 </html>
