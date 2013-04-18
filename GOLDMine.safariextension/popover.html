@@ -488,7 +488,7 @@ function update(mainarray) {
 			// Update our final boolean to show that we do have finals.
 			haveFinals = true;
 			
-			if (mainarray[i].finalT.indexOf("Contact Professor") < 0) {
+			if (mainarray[i].finalT.search(/[a-zA-Z]+, [a-zA-Z]+ [0-9]{1,2}, [0-9]{4}/g) > 0) {
 				finalList[i] = mainarray[i].finalT;
 			} else {
 				finalList[i] = "";
@@ -605,7 +605,7 @@ function makeRelativeDate(stringTime, day, finalString) {
 	var currentDate = new Date();
 
 	var matches = finalString.match(/[a-zA-Z]+, [a-zA-Z]+ [0-9]{1,2}, [0-9]{4}/g);
-	if (matches.length > 0) {
+	if (matches && matches.length > 0) {
 		var finalTime = matches[0].replace(/,/g,'');
 		var split = finalTime.split(" ");
 		currentDate = new Date(parseInt(split[3]), monthLookup[split[1]], parseInt(split[2]), 12, 0, 0, 0);
@@ -702,6 +702,10 @@ function makeICalendar(timeList, finalStrings) {
 	'METHOD:PUBLISH\n';
 	for (var i = 0; i < timeList.length; i++) {
 		var time = timeList[i];
+		
+		if (time.days.length < 1 || !time.days[0]) {
+			continue;
+		}
 		
 		if (courseNames.indexOf(time.courseName) < 0) {
 			courseNames.push(time.courseName);
