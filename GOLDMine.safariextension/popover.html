@@ -636,6 +636,38 @@ function makeRelativeDate(stringTime, day, finalString) {
 	return relative;
 }
 
+function makeFinalsWeekTime(finalString, start) {
+	var dayLookup = {"Monday": 1, "Tuesday" : 2, "Wednesday": 3, "Thursday": 4, "Friday" : 5, "Saturday": 6, "Sunday": 0};
+	var monthLookup = {"January": 0, "February": 1, "March": 2, "April": 3, "May": 4, "June": 5, "July": 6, "August": 7, "September": 8, "October": 9, "November": 10, "December": 11};
+	
+	var matches = finalString.match(/[a-zA-Z]+, [a-zA-Z]+ [0-9]{1,2}, [0-9]{4}/g);
+	var finalTime = matches[0].replace(/,/g,'');
+	var split = finalTime.split(" ");
+	var relative = new Date(parseInt(split[3]), monthLookup[split[1]], parseInt(split[2]), 12, 0, 0, 0);
+			
+	var split = finalString.match(/[0-9]{1,2}:[0-9]{2} (AM|PM)/g);
+	if (start) {
+		split = split[0].split(":");
+	} else {
+		split = split[1].split(":");
+	}
+	var hour = parseInt(split[0]);
+	var minute = parseInt(split[1].substr(0,2));
+	if (split[1].substr(3, 2) == "PM") {
+		if (hour != 12)
+			hour += 12;
+	} else if (hour == 12) {
+		hour -= 12;
+	}
+	
+	relative.setHours(hour);
+	relative.setMinutes(minute);
+	relative.setSeconds(0);
+	relative.setMilliseconds(0);
+	
+	return relative;
+}
+
 function makeTwoDigit(num) {
 	if (num < 10)
 		return "0" + num;
@@ -659,6 +691,9 @@ function makeICalendar(timeList, finalStrings) {
 		}
 	}
 	
+	var courseNames = [];
+	var courseLocations = [];
+	
 	var icalString =
 	'BEGIN:VCALENDAR\n' +
 	'VERSION:2.0\n' +
@@ -666,6 +701,11 @@ function makeICalendar(timeList, finalStrings) {
 	'METHOD:PUBLISH\n';
 	for (var i = 0; i < timeList.length; i++) {
 		var time = timeList[i];
+		
+		if (courseNames.indexOf(time.courseName) < 0) {
+			courseNames.push(time.courseName);
+			courseLocations.push(time.room);
+		}
 
 		icalString +=
 		'BEGIN:VEVENT\n' +
@@ -682,9 +722,21 @@ function makeICalendar(timeList, finalStrings) {
 		icalString += ';WKST=SU' + '\n' +
 		'DTEND:' + makeICalDate(makeRelativeDate(time.endTime, time.days[0], validFinal)) + '\n' +
 		'LOCATION:' + time.room + '\n' +
-		'END:VEVENT\n';
-		
-		// alert(time.courseName + ": " + makeRelativeDate(time.startTime, time.day).toString() + " (" + time.startTime + ") to " + makeRelativeDate(time.endTime, time.day).toString() + " (" + time.endTime + ") - day: " + time.day);
+		'END:VEVENT\n';		
+	}
+	
+	for (var i = 0; i < finalStrings.length; i++) {
+		if (finalStrings[i] !== "") {
+			icalString +=
+			'BEGIN:VEVENT\n' +
+			'UID:' + ((new Date().getTime()) + i + timeList.length) + '@' + 'GOLDMine' + '\n' +
+			'DTSTAMP:' + makeICalDate(new Date()) + '\n' +
+			'SUMMARY:' + courseNames[i] + " Final" + '\n' +
+			'DTSTART:' + makeICalDate(makeFinalsWeekTime(finalStrings[i], true)) + '\n' +
+			'DTEND:' + makeICalDate(makeFinalsWeekTime(finalStrings[i], false)) + '\n' +
+			'LOCATION:' + courseLocations[i] + '\n' +
+			'END:VEVENT\n';
+		}
 	}
 
 	icalString += 'END:VCALENDAR';
