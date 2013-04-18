@@ -694,6 +694,7 @@ function makeICalendar(timeList, finalStrings) {
 	var courseNames = [];
 	var courseLocations = [];
 	
+	
 	var icalString =
 	'BEGIN:VCALENDAR\n' +
 	'VERSION:2.0\n' +
@@ -706,12 +707,17 @@ function makeICalendar(timeList, finalStrings) {
 			courseNames.push(time.courseName);
 			courseLocations.push(time.room);
 		}
+		
+		var section = "";
+		if (((i !== 0) && (timeList[i-1].courseName === timeList[i].courseName)) && ((i === timeList.length - 1) || (timeList[i].courseName !== timeList[i+1].courseName))) {
+			section = " Section";
+		}
 
 		icalString +=
 		'BEGIN:VEVENT\n' +
 		'UID:' + ((new Date().getTime()) + i) + '@' + 'GOLDMine' + '\n' +
 		'DTSTAMP:' + makeICalDate(new Date()) + '\n' +
-		'SUMMARY:' + time.courseName + '\n' +
+		'SUMMARY:' + time.courseName + section + '\n' +
 		'DTSTART:' + makeICalDate(makeRelativeDate(time.startTime, time.days[0], validFinal)) + '\n' +
 		'RRULE:FREQ=WEEKLY;COUNT=' + (time.days.length * 10) + ';INTERVAL=1;BYDAY=';
 		for (var j = 0; j < time.days.length; j++) {
