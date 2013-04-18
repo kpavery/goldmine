@@ -398,6 +398,7 @@ function update(mainarray) {
 	var height = 59;
 	// Initially, we have no final information.
 	haveFinals = false;
+	var validFinal = "";
 
 	// main is the element (a table) that we will insert our data into to display it to the user.
 	var main = document.getElementById("main");
@@ -486,6 +487,10 @@ function update(mainarray) {
 			height += 27;
 			// Update our final boolean to show that we do have finals.
 			haveFinals = true;
+			
+			if (mainarray[i].finalT.indexOf("Contact Professor") < 0) {
+				validFinal = mainarray[i].finalT;
+			}
 		}
 	}
 
@@ -501,7 +506,7 @@ function update(mainarray) {
 		// Set the finals content to the string.
 		finals.innerHTML = finalStr;
 		
-		parseTimes();
+		parseTimes(validFinal);
 		
 		var download = document.getElementById("downloadfooter");
 		download.style.display = "block";
@@ -592,9 +597,21 @@ function getInterval(timeString) {
 	return [split[0], split[1]];
 }
 
-function makeRelativeDate(stringTime, day) {
+function makeRelativeDate(stringTime, day, finalString) {
 	var dayLookup = {"Monday": 1, "Tuesday" : 2, "Wednesday": 3, "Thursday": 4, "Friday" : 5, "Saturday": 6, "Sunday": 0};
+	var monthLookup = {"January": 0, "February": 1, "March": 2, "April": 3, "May": 4, "June": 5, "July": 6, "August": 7, "September": 8, "October": 9, "November": 10, "December": 11};
 	var currentDate = new Date();
+
+	var matches = finalString.match(/[a-zA-Z]+, [a-zA-Z]+ [0-9]{1,2}, [0-9]{4}/g);
+	if (matches.length > 0) {
+		var finalTime = matches[0].replace(/,/g,'');
+		var split = finalTime.split(" ");
+		currentDate = new Date(parseInt(split[3]), monthLookup[split[1]], parseInt(split[2]), 12, 0, 0, 0);
+		var seconds = currentDate.getTime();
+		seconds -= 10 * 7 * 24 * 60 * 60 * 1000;
+		currentDate = new Date(seconds);
+	}
+		
 	var seconds = currentDate.getTime();
 	var currentDay = currentDate.getDay();
 	seconds += 24 * 60 * 60 * (dayLookup[day] - currentDay) * 1000;
@@ -630,7 +647,7 @@ function makeICalDate(date) {
 	return string;
 }
 
-function makeICalendar(timeList) {
+function makeICalendar(timeList, finalString) {
 	var icalString =
 	'BEGIN:VCALENDAR\n' +
 	'VERSION:2.0\n' +
@@ -644,15 +661,15 @@ function makeICalendar(timeList) {
 		'UID:' + ((new Date().getTime()) + i) + '@' + 'GOLDMine' + '\n' +
 		'DTSTAMP:' + makeICalDate(new Date()) + '\n' +
 		'SUMMARY:' + time.courseName + '\n' +
-		'DTSTART:' + makeICalDate(makeRelativeDate(time.startTime, time.days[0])) + '\n' +
-		'RRULE:FREQ=WEEKLY;COUNT=10;INTERVAL=1;BYDAY=';
+		'DTSTART:' + makeICalDate(makeRelativeDate(time.startTime, time.days[0], finalString)) + '\n' +
+		'RRULE:FREQ=WEEKLY;COUNT=' + (time.days.length * 10) + ';INTERVAL=1;BYDAY=';
 		for (var j = 0; j < time.days.length; j++) {
 			icalString += time.days[j].substr(0,2).toUpperCase();
 			if (j != time.days.length - 1)
 				icalString += ","
 		}
 		icalString += ';WKST=SU' + '\n' +
-		'DTEND:' + makeICalDate(makeRelativeDate(time.endTime, time.days[0])) + '\n' +
+		'DTEND:' + makeICalDate(makeRelativeDate(time.endTime, time.days[0], finalString)) + '\n' +
 		'LOCATION:' + time.room + '\n' +
 		'END:VEVENT\n';
 		
@@ -663,7 +680,7 @@ function makeICalendar(timeList) {
 	return icalString;
 }
 
-function parseTimesForQuarter(quarter) {
+function parseTimesForQuarter(quarter, finalString) {
 	var mainarray = JSON.parse(localStorage.getItem("mainarray"))[quarter];
 	if (mainarray) {
 		var timeList = [];
@@ -683,16 +700,16 @@ function parseTimesForQuarter(quarter) {
 				timeList.push(meeting);
 			}
 		}
-		var ical = makeICalendar(timeList);
+		var ical = makeICalendar(timeList, finalString);
 		var download = document.getElementById("download");
 		download.href = "http://kpavery.com/goldmine.php?data=" + encodeURIComponent(encodeURI(ical));
 	}
 }
 
-function parseTimes() {
+function parseTimes(finalString) {
 	var select = document.getElementById("quarter");
 	var quarter = select.options[select.selectedIndex].text;
-	parseTimesForQuarter(quarter);
+	parseTimesForQuarter(quarter, finalString);
 }
 
 // Tell Safari to attempt to get data from local storage and update the popover before displaying it.
