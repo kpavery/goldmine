@@ -398,7 +398,7 @@ function update(mainarray) {
 	var height = 59;
 	// Initially, we have no final information.
 	haveFinals = false;
-	var validFinal = "";
+	var finalList = [];
 
 	// main is the element (a table) that we will insert our data into to display it to the user.
 	var main = document.getElementById("main");
@@ -489,7 +489,9 @@ function update(mainarray) {
 			haveFinals = true;
 			
 			if (mainarray[i].finalT.indexOf("Contact Professor") < 0) {
-				validFinal = mainarray[i].finalT;
+				finalList[i] = mainarray[i].finalT;
+			} else {
+				finalList[i] = "";
 			}
 		}
 	}
@@ -506,7 +508,7 @@ function update(mainarray) {
 		// Set the finals content to the string.
 		finals.innerHTML = finalStr;
 		
-		parseTimes(validFinal);
+		parseTimes(finalList);
 		
 		var download = document.getElementById("downloadfooter");
 		download.style.display = "block";
@@ -647,7 +649,16 @@ function makeICalDate(date) {
 	return string;
 }
 
-function makeICalendar(timeList, finalString) {
+function makeICalendar(timeList, finalStrings) {
+	
+	var validFinal = "";
+	for (var i = 0; i < finalStrings.length; i++) {
+		if (validFinal === "" && finalStrings[i] !== "") {
+			validFinal = finalStrings[i];
+			break;
+		}
+	}
+	
 	var icalString =
 	'BEGIN:VCALENDAR\n' +
 	'VERSION:2.0\n' +
@@ -661,7 +672,7 @@ function makeICalendar(timeList, finalString) {
 		'UID:' + ((new Date().getTime()) + i) + '@' + 'GOLDMine' + '\n' +
 		'DTSTAMP:' + makeICalDate(new Date()) + '\n' +
 		'SUMMARY:' + time.courseName + '\n' +
-		'DTSTART:' + makeICalDate(makeRelativeDate(time.startTime, time.days[0], finalString)) + '\n' +
+		'DTSTART:' + makeICalDate(makeRelativeDate(time.startTime, time.days[0], validFinal)) + '\n' +
 		'RRULE:FREQ=WEEKLY;COUNT=' + (time.days.length * 10) + ';INTERVAL=1;BYDAY=';
 		for (var j = 0; j < time.days.length; j++) {
 			icalString += time.days[j].substr(0,2).toUpperCase();
@@ -669,7 +680,7 @@ function makeICalendar(timeList, finalString) {
 				icalString += ","
 		}
 		icalString += ';WKST=SU' + '\n' +
-		'DTEND:' + makeICalDate(makeRelativeDate(time.endTime, time.days[0], finalString)) + '\n' +
+		'DTEND:' + makeICalDate(makeRelativeDate(time.endTime, time.days[0], validFinal)) + '\n' +
 		'LOCATION:' + time.room + '\n' +
 		'END:VEVENT\n';
 		
@@ -680,7 +691,7 @@ function makeICalendar(timeList, finalString) {
 	return icalString;
 }
 
-function parseTimesForQuarter(quarter, finalString) {
+function parseTimesForQuarter(quarter, finalStrings) {
 	var mainarray = JSON.parse(localStorage.getItem("mainarray"))[quarter];
 	if (mainarray) {
 		var timeList = [];
@@ -700,16 +711,16 @@ function parseTimesForQuarter(quarter, finalString) {
 				timeList.push(meeting);
 			}
 		}
-		var ical = makeICalendar(timeList, finalString);
+		var ical = makeICalendar(timeList, finalStrings);
 		var download = document.getElementById("download");
 		download.href = "http://kpavery.com/goldmine.php?data=" + encodeURIComponent(encodeURI(ical));
 	}
 }
 
-function parseTimes(finalString) {
+function parseTimes(finalStrings) {
 	var select = document.getElementById("quarter");
 	var quarter = select.options[select.selectedIndex].text;
-	parseTimesForQuarter(quarter, finalString);
+	parseTimesForQuarter(quarter, finalStrings);
 }
 
 // Tell Safari to attempt to get data from local storage and update the popover before displaying it.
