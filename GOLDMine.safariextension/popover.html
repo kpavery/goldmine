@@ -106,6 +106,16 @@ a:hover {
 	color: #666;
 }
 
+#downloadfooter {
+	text-align: center;
+	font-size: 0.75em;
+	visibility: hidden;
+}
+
+#downloadfooter a {
+	color: #666;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -486,13 +496,21 @@ function update(mainarray) {
 		// Add the finals header to the height.
 		height += 27;
 		// Show the finals table.
-		finals.style.visibility="visible";
+		finals.style.visibility = "visible";
 		// Set the finals content to the string.
 		finals.innerHTML = finalStr;
+		
+		parseTimes();
+		
+		var download = document.getElementById("downloadfooter");
+		download.style.visibility = "visible";
 	} else {
 		// Hide the final table and reset its content.
 		finals.style.visibility="hidden";
 		finals.innerHTML = "";
+		
+		var download = document.getElementById("downloadfooter");
+		download.style.visibility = "hidden";
 	}
 
 	// Set the popover height to the computed height.
@@ -549,7 +567,6 @@ function selectChanged() {
 	if (mainarray) {
 		update(mainarray);
 	}
-	parseTimes();
 }
 
 // Function that updates the select control and updates the page, called before the page is shown.
@@ -701,7 +718,7 @@ Select quarter: <select id="quarter" onchange="selectChanged();">
 <table id="finals" cellspacing="0">
 <tr><td class='cent'></td></tr>
 </table>
-<a download="Courses.ics" href="" id="download">Download</a>
+<div id="downloadfooter"><a download="Courses.ics" href="" id="download">Download (ics file)</a></div>
 <div id="helpfooter"><a href="http://kpavery.github.io/goldmine/#help">Help</a></div>
 </body>
 </html>
