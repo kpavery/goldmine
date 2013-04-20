@@ -115,6 +115,14 @@ if (class_names.length > 0) {
 			}
 		}
 		
+		var summer;
+		var summers = className.match(/Session [A-G] \([0-9]{1,2}\/[0-9]{1,2} - [0-9]{1,2}\/[0-9]{1,2}\)/g);
+		if (summers.length > 0) {
+			summer = summers[0]
+		}
+				
+		className = className.replace(/Session [A-G] \([0-9]{1,2}\/[0-9]{1,2} - [0-9]{1,2}\/[0-9]{1,2}\)/g,"");
+		
 		// Get final for this class, and if there is one, trim it.
 		var finalT = finals[i];
 		if (finalT) {
@@ -122,7 +130,7 @@ if (class_names.length > 0) {
 		}
 		
 		// Create a new array with the department, number, name, an array of meeting times, and the instructors. Add that as a new element of the passed data.
-		var final_split = {'department': department.trim(),'number': number.trim(),'courseName': className.trim(),'meetingTimes': class_times[i],'instructor': instructors[i],'finalT': finalT};
+		var final_split = {'department': department.trim(),'number': number.trim(),'courseName': className.trim(),'meetingTimes': class_times[i],'instructor': instructors[i],'finalT': finalT, 'summer': summer};
 		// Offset the index at one, because the first element is the quarter.
 		pass_data[i+1] = final_split;
 	}

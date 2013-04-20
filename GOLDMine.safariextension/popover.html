@@ -116,6 +116,16 @@ a:hover {
 #downloadfooter a {
 	color: #666;
 }
+
+.summer td {
+	font-size: .8em;
+	color: #000;
+}
+
+.summer td a {
+	color: #000;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -437,6 +447,19 @@ function update(mainarray) {
 
 		// Add the department and class to the final table content.
 		finalStr += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i].department) + "' target='_blank'>" + mainarray[i].department + "</a>" + "</td><td class='cent'>" + mainarray[i].number + "</td>";
+				
+		if (mainarray[i].summer) {
+			height += 27;
+			
+			if (i % 2 === 1) {
+				str += "<tr class='alt summer'>";
+			} else {
+				str += "<tr class='summer'>";
+			}
+			
+			str += "<td colspan='4' class='cent'>" + mainarray[i].summer + "</td>";
+			str += "</tr>";
+		}
 
 		// Loop through the array of meeting times for the class (mainarray[i][3]). We increment j by 3 each time, because we've stored 3 elements in the array for each meeting time.
 		for (var j = 0; j < mainarray[i].meetingTimes.length; j++) {
