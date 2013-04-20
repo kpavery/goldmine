@@ -126,7 +126,7 @@ if (class_names.length > 0) {
 		var summer;
 		var summers = className.match(/Session [A-G] \([0-9]{1,2}\/[0-9]{1,2} - [0-9]{1,2}\/[0-9]{1,2}\)/g);
 		// If it does, store that information in summer
-		if (summers.length > 0) {
+		if (summers && summers.length > 0) {
 			summer = summers[0]
 		}
 		
