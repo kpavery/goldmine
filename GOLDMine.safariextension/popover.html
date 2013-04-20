@@ -123,7 +123,7 @@ a:hover {
 // This function adds .capitalize() to string variables. It works with punctuation now.
 String.prototype.capitalize = function(){
 	"use strict";
-	return this.replace( /(^|\s|-|\/|\.)([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
+	return this.replace( /(^|\s|-|\/|&|\.|\()([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } );
 };
 
 // Create an array of buildings mapped with the abbreviation.
