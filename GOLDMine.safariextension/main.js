@@ -52,13 +52,19 @@ for (var i = 0; i < classes.length; i++) {
 	}
 }
 
+// Get the finals table element from GOLD
 var finalTable = document.getElementById("pageContent_FinalsGrid");
+// If we found one, then process it
 if (finalTable) {
 	var numFinals = 0;
+	// Get the rows of that table (which are tables themselves)
 	var rows = finalTable.getElementsByTagName("table");
+	// Process each row
 	for (var i=0; i < rows.length; i++) {
+		// Check that we have a cell in it (which will contain a final
 		var cells = rows[i].getElementsByClassName("clcellprimary");
 		if (cells.length > 1) {
+			// Add that final to the finals array
 			finals[numFinals++] = cells[1].textContent;
 		}
 	}
@@ -99,6 +105,7 @@ if (class_names.length > 0) {
 		// Split based on the first number, which is part of the course number.
 		var num = /\d/;
 		var firstNum = class_names[i].search(num);
+		// Create a the department string based on that split
 		var department = class_names[i].substr(0,firstNum);
 		var split1 = class_names[i].substr(firstNum);
 		// Split the second part by hyphen surrounded by spaces, which should give the number and name separately.
@@ -115,12 +122,15 @@ if (class_names.length > 0) {
 			}
 		}
 		
+		// Check if the class name contains summer session information
 		var summer;
 		var summers = className.match(/Session [A-G] \([0-9]{1,2}\/[0-9]{1,2} - [0-9]{1,2}\/[0-9]{1,2}\)/g);
+		// If it does, store that information in summer
 		if (summers.length > 0) {
 			summer = summers[0]
 		}
-				
+		
+		// Then clear the summer session information from the class name
 		className = className.replace(/Session [A-G] \([0-9]{1,2}\/[0-9]{1,2} - [0-9]{1,2}\/[0-9]{1,2}\)/g,"");
 		
 		// Get final for this class, and if there is one, trim it.
@@ -129,7 +139,7 @@ if (class_names.length > 0) {
 			finalT = finalT.trim();
 		}
 		
-		// Create a new array with the department, number, name, an array of meeting times, and the instructors. Add that as a new element of the passed data.
+		// Create a new array with the department, number, name, an array of meeting times, the instructors, the final exam time, and summer session info. Add that as a new element of the passed data.
 		var final_split = {'department': department.trim(),'number': number.trim(),'courseName': className.trim(),'meetingTimes': class_times[i],'instructor': instructors[i],'finalT': finalT, 'summer': summer};
 		// Offset the index at one, because the first element is the quarter.
 		pass_data[i+1] = final_split;
