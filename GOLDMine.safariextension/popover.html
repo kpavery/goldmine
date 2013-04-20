@@ -20,7 +20,7 @@ body {
 td {
 	border-style: solid;
 	border-color: #AAA;
-	border-width: 1px 0px 0px 1px;
+	border-width: 1px 0 0 1px;
 	padding: 5px 8px;
 }
 
@@ -31,7 +31,7 @@ table tr td:last-child {
 table {
 	border-style: solid;
 	border-color: #AAA;
-	border-width: 0px 0px 1px 0px;
+	border-width: 0 0 1px 0;
 	background-color: #F3F3F3;
 	width: 100%;
 }
@@ -116,7 +116,6 @@ a:hover {
 #downloadfooter a {
 	color: #666;
 }
-
 </style>
 
 <script type="text/javascript">
@@ -499,6 +498,8 @@ function update(mainarray) {
 	// Set the table's content to our new content string.
 	main.innerHTML = str;
 
+	var download = document.getElementById("downloadfooter");
+
 	// If we have finals, show the table, otherwise hide it.
 	if (haveFinals) {
 		// Add the finals header to the height.
@@ -510,14 +511,12 @@ function update(mainarray) {
 		
 		parseTimes(finalList);
 		
-		var download = document.getElementById("downloadfooter");
 		download.style.display = "block";
 	} else {
 		// Hide the final table and reset its content.
 		finals.style.display="none";
 		finals.innerHTML = "";
 		
-		var download = document.getElementById("downloadfooter");
 		download.style.display = "none";
 	}
 
@@ -604,27 +603,30 @@ function makeRelativeDate(stringTime, day, finalString) {
 	var monthLookup = {"January": 0, "February": 1, "March": 2, "April": 3, "May": 4, "June": 5, "July": 6, "August": 7, "September": 8, "October": 9, "November": 10, "December": 11};
 	var currentDate = new Date();
 
+	var split;
+	var seconds;
 	var matches = finalString.match(/[a-zA-Z]+, [a-zA-Z]+ [0-9]{1,2}, [0-9]{4}/g);
 	if (matches && matches.length > 0) {
 		var finalTime = matches[0].replace(/,/g,'');
-		var split = finalTime.split(" ");
-		currentDate = new Date(parseInt(split[3]), monthLookup[split[1]], parseInt(split[2]), 12, 0, 0, 0);
-		var seconds = currentDate.getTime();
+		split = finalTime.split(" ");
+		currentDate = new Date(parseInt(split[3], 10), monthLookup[split[1]], parseInt(split[2], 10), 12, 0, 0, 0);
+		seconds = currentDate.getTime();
 		seconds -= 10 * 7 * 24 * 60 * 60 * 1000;
 		currentDate = new Date(seconds);
 	}
 		
-	var seconds = currentDate.getTime();
+	seconds = currentDate.getTime();
 	var currentDay = currentDate.getDay();
 	seconds += 24 * 60 * 60 * (dayLookup[day] - currentDay) * 1000;
 	var relative = new Date(seconds);
-	var split = stringTime.split(":");
-	var hour = parseInt(split[0]);
-	var minute = parseInt(split[1].substr(0,2));
-	if (split[1].substr(2, 2) == "PM") {
-		if (hour != 12)
+	split = stringTime.split(":");
+	var hour = parseInt(split[0], 10);
+	var minute = parseInt(split[1].substr(0,2), 10);
+	if (split[1].substr(2, 2) === "PM") {
+		if (hour !== 12) {
 			hour += 12;
-	} else if (hour == 12) {
+		}
+	} else if (hour === 12) {
 		hour -= 12;
 	}
 	
@@ -637,26 +639,26 @@ function makeRelativeDate(stringTime, day, finalString) {
 }
 
 function makeFinalsWeekTime(finalString, start) {
-	var dayLookup = {"Monday": 1, "Tuesday" : 2, "Wednesday": 3, "Thursday": 4, "Friday" : 5, "Saturday": 6, "Sunday": 0};
 	var monthLookup = {"January": 0, "February": 1, "March": 2, "April": 3, "May": 4, "June": 5, "July": 6, "August": 7, "September": 8, "October": 9, "November": 10, "December": 11};
 	
 	var matches = finalString.match(/[a-zA-Z]+, [a-zA-Z]+ [0-9]{1,2}, [0-9]{4}/g);
 	var finalTime = matches[0].replace(/,/g,'');
 	var split = finalTime.split(" ");
-	var relative = new Date(parseInt(split[3]), monthLookup[split[1]], parseInt(split[2]), 12, 0, 0, 0);
+	var relative = new Date(parseInt(split[3], 10), monthLookup[split[1]], parseInt(split[2], 10), 12, 0, 0, 0);
 			
-	var split = finalString.match(/[0-9]{1,2}:[0-9]{2} (AM|PM)/g);
+	split = finalString.match(/[0-9]{1,2}:[0-9]{2} (AM|PM)/g);
 	if (start) {
 		split = split[0].split(":");
 	} else {
 		split = split[1].split(":");
 	}
-	var hour = parseInt(split[0]);
-	var minute = parseInt(split[1].substr(0,2));
-	if (split[1].substr(3, 2) == "PM") {
-		if (hour != 12)
+	var hour = parseInt(split[0], 10);
+	var minute = parseInt(split[1].substr(0,2), 10);
+	if (split[1].substr(3, 2) === "PM") {
+		if (hour !== 12) {
 			hour += 12;
-	} else if (hour == 12) {
+		}
+	} else if (hour === 12) {
 		hour -= 12;
 	}
 	
@@ -669,10 +671,11 @@ function makeFinalsWeekTime(finalString, start) {
 }
 
 function makeTwoDigit(num) {
-	if (num < 10)
+	if (num < 10) {
 		return "0" + num;
-	else
+	} else {
 		return "" + num;
+	}
 }
 
 function makeICalDate(date) {
@@ -726,8 +729,9 @@ function makeICalendar(timeList, finalStrings) {
 		'RRULE:FREQ=WEEKLY;COUNT=' + (time.days.length * 10) + ';INTERVAL=1;BYDAY=';
 		for (var j = 0; j < time.days.length; j++) {
 			icalString += time.days[j].substr(0,2).toUpperCase();
-			if (j != time.days.length - 1)
-				icalString += ","
+			if (j !== time.days.length - 1) {
+				icalString += ",";
+			}
 		}
 		icalString += ';WKST=SU' + '\n' +
 		'DTEND:' + makeICalDate(makeRelativeDate(time.endTime, time.days[0], validFinal)) + '\n' +
