@@ -870,35 +870,56 @@ function makeICalendar(timeList, finalStrings) {
 	return icalString;
 }
 
+// Function to take a quarter, and a string of finals, and make an iCalendar downloadable file
 function parseTimesForQuarter(quarter, finalStrings) {
+	// Get the data for the given quarter
 	var mainarray = JSON.parse(localStorage.getItem("mainarray"))[quarter];
+	// If it was found, then process it
 	if (mainarray) {
+		// First get the times and relevant information from the quarter data
 		var timeList = [];
+		// Loop through each course
 		for (var i = 0; i < mainarray.length; i++) {
+			// Get its name
 			var courseName = mainarray[i].department + " " + mainarray[i].number.replace(/\s/g,'');
+			// Loop through its meeting times, as we add each separately
 			var meetingTimes = mainarray[i].meetingTimes;
 			for (var j = 0; j < meetingTimes.length; j++) {
+				// Get the room
 				var room = meetingTimes[j].room;
 				
+				// Get the class time string, and create two times (an interval) from it
 				var classTime = meetingTimes[j].meetingTime;
 				var interval = getInterval(classTime);
+				// Get the start and end time from the interval
 				var startTime = interval[0];
 				var endTime = interval[1];
 				
+				// Get the meeting days
 				var days = getDays(meetingTimes[j].day);
+				
+				// Create a course meeting object and add it to the meeting time list
 				var meeting = {'courseName': courseName, 'days': days, 'startTime': startTime, 'endTime': endTime, 'room': room};
 				timeList.push(meeting);
 			}
 		}
+		
+		// Use the created meeting time list to generate an iCalendar string, using the final strings passed
 		var ical = makeICalendar(timeList, finalStrings);
+		
+		// Add the download link for the iCalendar string. First find the download link element
 		var download = document.getElementById("download");
+		// Then create a download link that uses the PHP script and the iCalendar file as a URI parameter to download the file
 		download.href = "http://kpavery.com/goldmine.php?data=" + encodeURIComponent(encodeURI(ical));
 	}
 }
 
+// Function to parse times for the current quarter, given final strings
 function parseTimes(finalStrings) {
+	// Get the quarter selection dropdown, and then the current quarter
 	var select = document.getElementById("quarter");
 	var quarter = select.options[select.selectedIndex].text;
+	// Parse times for that quarter
 	parseTimesForQuarter(quarter, finalStrings);
 }
 
