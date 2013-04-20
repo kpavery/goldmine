@@ -17,6 +17,7 @@ GOLDMine's current features include:
 - Allow students to view each classroom on an interactive map of UCSB
 - Allow students to view the websites of departments they are taking classes in
 - Get final exam data from GOLD (for current quarter)
+- Automatically updates itself to new versions
 
 Future
 ------
