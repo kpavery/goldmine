@@ -757,7 +757,9 @@ function makeFinalsWeekTime(finalString, start) {
 	return relative;
 }
 
+// Function to make sure a number is two-digits, needed for iCalendar date fields
 function makeTwoDigit(num) {
+	// If less than ten, add a leading zero, otherwise just return the string version
 	if (num < 10) {
 		return "0" + num;
 	} else {
@@ -765,48 +767,68 @@ function makeTwoDigit(num) {
 	}
 }
 
+// Function to take a date object and return an iCalendar date string (format yyyymmddThhmmss)
 function makeICalDate(date) {
+	// Get the date fields, and ensure that they are two digit (except year, which must be four, which is what getfullyear returns anyways)
 	var string = "" + date.getFullYear() + makeTwoDigit(date.getMonth() + 1) + makeTwoDigit(date.getDate());
+	// Get the time fields, and ensure that they are two digit
 	string += "T" + makeTwoDigit(date.getHours()) + makeTwoDigit(date.getMinutes()) + makeTwoDigit(date.getSeconds());
+	// Return that string
 	return string;
 }
 
+// Function to make an iCalendar file from a list of course times and finals
 function makeICalendar(timeList, finalStrings) {
 	
+	// Find the first final time that is a valid string, and save it
 	var validFinal = "";
 	for (var i = 0; i < finalStrings.length; i++) {
+		// Check if the current is empty and the one we are looking at is not empty
 		if (validFinal === "" && finalStrings[i] !== "") {
+			// Save it, and finish the loop
 			validFinal = finalStrings[i];
 			break;
 		}
 	}
 	
+	// Arrays to store the course names and locations
 	var courseNames = [];
 	var courseLocations = [];
 	
 	
+	// Start the string with the iCalendar file header
 	var icalString =
 	'BEGIN:VCALENDAR\n' +
 	'VERSION:2.0\n' +
 	'PRODID:com.kpavery.GOLDMine\n' +
 	'METHOD:PUBLISH\n';
+	
+	// Loop through the course meeting times
 	for (var i = 0; i < timeList.length; i++) {
+		// Get tht time
 		var time = timeList[i];
 		
+		// If we don't have this courses information saved
 		if (courseNames.indexOf(time.courseName) < 0) {
+			// Save the name and location
 			courseNames.push(time.courseName);
 			courseLocations.push(time.room);
 		}
 		
+		// If we have no times, then don't process this course meeting time (as we have no calendar information
 		if (time.days.length < 1 || !time.days[0]) {
 			continue;
 		}
 		
+		// Handle discussion sections
 		var section = "";
+		// If we are not the first meeting time for this course, and we are the last meeting time for this course, we are a section
 		if (((i !== 0) && (timeList[i-1].courseName === timeList[i].courseName)) && ((i === timeList.length - 1) || (timeList[i].courseName !== timeList[i+1].courseName))) {
+			// Add a string accordingly
 			section = " Section";
 		}
-
+		
+		// Add the event field for this course meeting time to the iCalendar string, handling dates, sections, repeating course times, and locations
 		icalString +=
 		'BEGIN:VEVENT\n' +
 		'UID:' + ((new Date().getTime()) + i) + '@' + 'GOLDMine' + '\n' +
@@ -826,8 +848,11 @@ function makeICalendar(timeList, finalStrings) {
 		'END:VEVENT\n';		
 	}
 	
+	// Now add all the finals that we have information for to the iCalendar string. Loop through the final times
 	for (var i = 0; i < finalStrings.length; i++) {
+		// If this is a valid final, then add an event
 		if (finalStrings[i] !== "") {
+			// Add the event handling dates. We use the course name and location lookups for the name of the final and the location.
 			icalString +=
 			'BEGIN:VEVENT\n' +
 			'UID:' + ((new Date().getTime()) + i + timeList.length) + '@' + 'GOLDMine' + '\n' +
@@ -839,7 +864,8 @@ function makeICalendar(timeList, finalStrings) {
 			'END:VEVENT\n';
 		}
 	}
-
+	
+	// Finish the iCalendar string and return it
 	icalString += 'END:VCALENDAR';
 	return icalString;
 }
