@@ -448,7 +448,7 @@ function update(mainarray) {
 		// Add a table row for each class, with its department (mainarray[i][0]), number (mainarray[i][1]), and name (mainarray[i][2]).
 		str += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i].department) + "' target='_blank'>" + mainarray[i].department + "</a>" + "</td><td class='cent'>" + mainarray[i].number + "</td>";
 		str += "<td colspan='2'>" + mainarray[i].courseName.toLowerCase().capitalize() + "</td></tr>";
-		height += 30;
+		height += 32;
 
 		// Add the department and class to the final table content.
 		finalStr += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i].department) + "' target='_blank'>" + mainarray[i].department + "</a>" + "</td><td class='cent'>" + mainarray[i].number + "</td>";
