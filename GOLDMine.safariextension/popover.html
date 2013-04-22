@@ -31,7 +31,7 @@ table tr td:last-child {
 table {
 	border-style: solid;
 	border-color: #AAA;
-	border-width: 0 0 1px 0;
+	border-width: 1px 1px 2px 1px;
 	background-color: #F3F3F3;
 	width: 100%;
 }
@@ -121,6 +121,10 @@ a:hover {
 
 .summer td a {
 	color: #000;
+}
+
+.toprow td {
+	border-top-width: 2px;
 }
 
 </style>
@@ -430,11 +434,15 @@ function update(mainarray) {
 	for (var i = 0; i < mainarray.length; i++) {
 		// Alternate colours for the table rows and the final table row.
 		if (i % 2 === 1) {
-			str += "<tr class='alt'>";
+			str += "<tr class='alt toprow'>";
 			finalStr += "<tr class='finalsrow alt'>";
 		} else {
-			str += "<tr>";
-			finalStr += "<tr class='finalsrow'>";
+			str += "<tr class='toprow'>";
+			if (i === 0) {
+				finalStr += "<tr class='finalsrow toprow'>";
+			} else {
+				finalStr += "<tr class='finalsrow'>";
+			}
 		}
 
 		// Add a table row for each class, with its department (mainarray[i][0]), number (mainarray[i][1]), and name (mainarray[i][2]).
