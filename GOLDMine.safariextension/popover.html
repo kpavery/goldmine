@@ -127,6 +127,15 @@ a:hover {
 	border-top-width: 2px;
 }
 
+#header {
+	text-align: center;
+	font-weight: bold;
+	margin: 8px auto 5px auto;
+	border-top: 1px #AAA dashed;
+	padding-top: 3px;
+	display: none;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -404,8 +413,8 @@ function respondToMessage(theMessageEvent) {
 // This function updates the popover given an array of data.
 function update(mainarray) {
 	"use strict";
-	// Initial height is 59, which is the height of the select element, the download link, and the help link.
-	var height = 59;
+	// Initial height is 90, which is the height of the select element, the download link, the help link, and the quarter header.
+	var height = 90;
 	// Initially, we have no final information.
 	haveFinals = false;
 	var finalList = [];
@@ -419,13 +428,17 @@ function update(mainarray) {
 	// Get the quarter selection control and find the selected quarter.
 	var select = document.getElementById("quarter");
 	var quarter = select.options[select.selectedIndex].text;
+	
+	var header = document.getElementById("header");
+	header.innerHTML = quarter;
+	header.style.display = "block";
 
 	// Get the data for the quarter.
 	mainarray = mainarray[quarter];
 
 	// Start the string, and include the quarter that the popover is listing. The quarter is stored in the first element of the data passed.
-	str = "<tr><td colspan='4' class='cent bold top'>Class List (" + quarter + ")</td></tr>";
-	finalStr = "<tr><td colspan='4' class='cent bold top'>Final Exams (" + quarter + ")</td></tr>";
+	str = "<tr><td colspan='4' class='cent bold top'>Class List</td></tr>";
+	finalStr = "<tr><td colspan='4' class='cent bold top'>Final Exams</td></tr>";
 
 	// Add the height of the header to the height.
 	height += 30;
@@ -556,6 +569,9 @@ function update(mainarray) {
 		
 		// Hide the download link (no .ics generated if there are no finals
 		download.style.display = "none";
+		
+		// If we are not displaying the download link, remove its height
+		height -= 16;
 	}
 
 	// Set the popover height to the computed height.
@@ -820,7 +836,7 @@ function makeICalendar(timeList, finalStrings) {
 			courseLocations.push(time.room);
 		}
 		
-		// If we have no times, then don't process this course meeting time (as we have no calendar information
+		// If we have no times, then do not process this course meeting time (as we have no calendar information
 		if (time.days.length < 1 || !time.days[0]) {
 			continue;
 		}
@@ -941,6 +957,7 @@ Select quarter: <select id="quarter" onchange="selectChanged();">
 <option></option>
 </select>
 </div>
+<div id="header"></div>
 <div id="downloadfooter"><a href="" id="download">Download Schedule</a></div>
 <table id="main" cellspacing="0">
 <tr><td class='cent'>Please go to your course schedule page in GOLD (or reload it if you are already there).</td></tr>
