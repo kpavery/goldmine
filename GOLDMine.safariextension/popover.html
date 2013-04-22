@@ -85,15 +85,12 @@ a:hover {
 	font-size: .80em;
 }
 
-.right {
+#quarterwhole {
+	visibility: hidden;
 	text-align: center;
 	vertical-align: middle;
 	font-size: 12px;
 	margin-bottom: 5px;
-}
-
-#quarterwhole {
-	visibility: hidden;
 }
 
 #helpfooter {
@@ -931,7 +928,7 @@ safari.application.addEventListener("popover",initial,false);
 </script>
 </head>
 <body>
-<div class="right" id="quarterwhole">
+<div id="quarterwhole">
 Select quarter: <select id="quarter" onchange="selectChanged();">
 <option></option>
 </select>
