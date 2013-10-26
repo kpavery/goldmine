@@ -25,3 +25,8 @@ Future
 In the future some of the suggested features are:
 - Export course data to calendars (iCalendar .ics files, Apple Calendar, Google Calendar, etc.)
 - Compare schedules with friends
+
+License
+-------
+
+Included as file license.txt and duplicated in source files.
