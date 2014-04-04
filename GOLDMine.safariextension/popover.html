@@ -156,7 +156,7 @@ a:hover {
 // This function adds .capitalize() to string variables. It works with punctuation now, as well as roman numerals (within reason).
 String.prototype.capitalize = function(){
 	"use strict";
-	return this.replace( /(^|\s|-|\/|&|\.|\()([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } ).replace(/( )(^|i{1,3}|iv|vi)/ig, function(m, p1, p2){ return p1+p2.toUpperCase()});
+	return this.replace( /(^|\s|-|\/|&|\.|\()([a-z])/g , function(m,p1,p2){ return p1+p2.toUpperCase(); } ).replace(/( )(^|i{1,3}|iv|vi)( |$)/ig, function(m, p1, p2){ return p1+p2.toUpperCase()});
 };
 
 // Create an array of buildings mapped with the abbreviation.
@@ -427,7 +427,7 @@ function respondToMessage(theMessageEvent) {
 function update(mainarray) {
 	"use strict";
 	// Initial height is 90, which is the height of the select element, the download link, the help link, and the quarter header.
-	var height = 90;
+	var height = (22 + 5) + (8 + 3 + 19 + 5) + (2 + 16 + 5) + (5 + 14);
 	// Initially, we have no final information.
 	haveFinals = false;
 	var finalList = [];
@@ -474,7 +474,7 @@ function update(mainarray) {
 		// Add a table row for each class, with its department (mainarray[i][0]), number (mainarray[i][1]), and name (mainarray[i][2]).
 		str += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i].department) + "' target='_blank'>" + mainarray[i].department + "</a>" + "</td><td class='cent'>" + mainarray[i].number + "</td>";
 		str += "<td colspan='2'>" + mainarray[i].courseName.toLowerCase().capitalize() + "</td></tr>";
-		height += 32;
+		height += 31;
 
 		// Add the department and class to the final table content.
 		finalStr += "<td class='right'>" + "<a href='" + getDeptURL(mainarray[i].department) + "' target='_blank'>" + mainarray[i].department + "</a>" + "</td><td class='cent'>" + mainarray[i].number + "</td>";
@@ -563,8 +563,10 @@ function update(mainarray) {
 
 	// If we have finals, show the table, otherwise hide it.
 	if (haveFinals) {
+		// Add finals table padding and margin to height.
+		height += 5;
 		// Add the finals header to the height.
-		height += 27;
+		height += 30;
 		// Show the finals table.
 		finals.style.display = "table";
 		// Set the finals content to the string.
@@ -584,11 +586,11 @@ function update(mainarray) {
 		download.style.display = "none";
 		
 		// If we are not displaying the download link, remove its height
-		height -= 16;
+		height -= (2 + 16 + 5);
 	}
 
 	// Set the popover height to the computed height.
-	safari.self.height = Math.max(height + 34, 360);
+	safari.self.height = Math.max(height + 20, 360);
 }
 
 
