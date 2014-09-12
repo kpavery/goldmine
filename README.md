@@ -1,6 +1,8 @@
 GOLDMine
 ========
 
+[Webpage (including information and instructions)](https://kpavery.github.io/goldmine)
+
 Overview
 --------
 
@@ -30,3 +32,8 @@ License
 -------
 
 Included as file license.txt and duplicated in source files.
+
+Credits
+-------
+
+Safari extension by [Keith Avery](https://kpavery.github.io).
