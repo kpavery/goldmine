@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
-<!-- 
+<!--
 Copyright (c) 2013, Keith Avery and Richard Macklin
 All rights reserved.
 
@@ -197,7 +197,7 @@ function getBldgURL(bldgAndRoom)
 	"use strict";
 	var bldg = bldgAndRoom.split(" ");
 	var returnURL;
-	if(abbrevs.indexOf(bldg[0]) > -1) { 
+	if(abbrevs.indexOf(bldg[0]) > -1) {
 		returnURL = "http://map.geog.ucsb.edu/?bldg=" + bldgs[bldg[0]].icmname + "&room=" + bldg[1];
 	} else {
 		returnURL = "http://maps.google.com/maps?q=" + encodeURIComponent(getBldg(bldgAndRoom)) + ",+Isla+Vista,+CA";
@@ -881,7 +881,7 @@ function makeICalendar(timeList, finalStrings) {
 		icalString += ';WKST=SU' + '\n' +
 		'DTEND:' + makeICalDate(makeRelativeDate(time.endTime, time.days[0], validFinal)) + '\n' +
 		'LOCATION:' + time.room + '\n' +
-		'END:VEVENT\n';		
+		'END:VEVENT\n';
 	}
 	
 	// Now add all the finals that we have information for to the iCalendar string. Loop through the final times

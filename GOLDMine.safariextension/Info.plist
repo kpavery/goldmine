@@ -5,7 +5,7 @@
 	<key>Author</key>
 	<string>Keith Avery</string>
 	<key>Builder Version</key>
-	<string>9537.75.14</string>
+	<string>10600.3.5</string>
 	<key>CFBundleDisplayName</key>
 	<string>GOLDMine</string>
 	<key>CFBundleIdentifier</key>
@@ -59,6 +59,8 @@
 	</dict>
 	<key>Description</key>
 	<string>Extension to get course data from UCSB GOLD.</string>
+	<key>DeveloperIdentifier</key>
+	<string>35P6Q4THN7</string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>
