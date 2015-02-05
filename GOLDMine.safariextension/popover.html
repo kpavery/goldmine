@@ -946,7 +946,8 @@ function parseTimesForQuarter(quarter, finalStrings) {
 		// Add the download link for the iCalendar string. First find the download link element
 		var download = document.getElementById("download");
 		// Then create a download link that uses the PHP script and the iCalendar file as a URI parameter to download the file
-		download.href = "https://kpavery.com/goldmine.php?data=" + encodeURIComponent(encodeURI(ical));
+		// download.href = "https://kpavery.com/goldmine.php?data=" + encodeURIComponent(encodeURI(ical));
+		download.href = "data:text/calendar," + encodeURIComponent(encodeURI(ical));
 	}
 }
 
